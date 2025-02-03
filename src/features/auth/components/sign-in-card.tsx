@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import {loginSchema} from "@/features/auth/schemas";
 
 export const formSchema = z.object({
     email: z.string().email(),
@@ -28,15 +29,15 @@ export const formSchema = z.object({
 });
 
 export const SignInCard = () => {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
             password: "",
         },
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const onSubmit = (values: z.infer<typeof loginSchema>) => {
         console.log({values});
     } 
     return (
