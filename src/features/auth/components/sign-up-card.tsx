@@ -9,6 +9,7 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {z} from "zod";
 
+
 import {
     Form,
     FormControl,
@@ -19,6 +20,7 @@ import {
 import {
     Card,
     CardContent,
+
     CardDescription,
     CardHeader,
     CardTitle
@@ -34,6 +36,7 @@ export const SignUpCard = () => {
         resolver: zodResolver(registerSchema),
         defaultValues: {
             name: "",
+
             email: "",
             password: "",
         },
@@ -125,24 +128,25 @@ export const SignUpCard = () => {
                 <DottedSeparator/>
             </div>
             <CardContent className="p-7 flex flex-col gap-y-4">
-                <Button
-                    disabled={false}
-                    variant="secondary"
-                    size="lg"
-                    className="W-full"
-                >
-                    <FcGoogle className="mr-2 size-5"/>
-                    Login with Google
-                </Button>
-                <Button
-                    disabled={false}
-                    variant="secondary"
-                    size="lg"
-                    className="W-full"
-                >
-                    <FaGithub className="mr-2 size-5"/>
-                    Login with Github
-                </Button>
+
+            <Button
+            disabled={false}
+            variant="secondary"
+            size="lg" 
+            className="W-full"
+            >
+                <FcGoogle className="mr-2 size-5"/>
+                Login with Google
+            </Button>
+            <Button
+            disabled={false}
+            variant="secondary"
+            size="lg"
+            className="W-full"
+            >
+                <FaGithub className="mr-2 size-5"/>
+                Login with Github
+            </Button>
             </CardContent>
             <div>
                 <DottedSeparator/>
@@ -156,6 +160,7 @@ export const SignUpCard = () => {
                             </span>
                     </Link>
                 </p>
+
             </CardContent>
         </Card>
     );
