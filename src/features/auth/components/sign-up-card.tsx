@@ -78,21 +78,6 @@ export const SignUpCard = () => {
                                             {...field}
                                             type="text"
                                             placeholder="Enter your name"
-                                        />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            name="email"
-                            control={form.control}
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            type="email"
                                             placeholder="Enter email address"
                                         />
                                     </FormControl>
@@ -115,16 +100,7 @@ export const SignUpCard = () => {
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>
-                            )}
-                        />
-                        <Button disabled={false} size="lg" className="w-full">
-                            Sign Up
-                        </Button>
-                    </form>
-                </Form>
-            </CardContent>
-
-            <div className="px-7">
+           
                 <DottedSeparator/>
             </div>
             <CardContent className="p-7 flex flex-col gap-y-4">
