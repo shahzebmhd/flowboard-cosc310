@@ -27,3 +27,6 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: "main"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ESLINT_CONFIG_PATH: "./.eslintrc.js"  # Optional: specify ESLint config path
+          TS_CONFIG_PATH: "./tsconfig.json"    # Optional: specify TypeScript config path
+
