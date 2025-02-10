@@ -22,8 +22,8 @@ export default function Home() {
             <Button variant="outline">
                 Outline
             </Button>
-            <Button variant="tertiary">
-                Tertiary
+            <Button variant="teritary">
+                Teritary
             </Button>
         </div>
     );
