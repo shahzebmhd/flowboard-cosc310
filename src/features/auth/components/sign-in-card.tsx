@@ -1,4 +1,5 @@
 "use client";
+
 import {FcGoogle} from "react-icons/fc"
 import {FaGithub} from "react-icons/fa"
 import {Input} from "@/components/ui/input";
@@ -27,7 +28,7 @@ import {
 
 
 export const SignInCard = () => {
-    const {mutate} = useLogin();
+    const {mutate, isPending} = useLogin();
 
 
     const form = useForm<z.infer<typeof loginSchema>>({
@@ -66,6 +67,7 @@ export const SignInCard = () => {
                                 <FormControl>
                             <Input
                             {...field}
+                          
                             type="email"
                             placeholder="Enter email address"
                         />
@@ -83,6 +85,7 @@ export const SignInCard = () => {
                                 <FormControl>
                             <Input
                             {...field}
+                            
                             type="password"
                             placeholder="Enter password"
                         />
@@ -91,7 +94,7 @@ export const SignInCard = () => {
                             </FormItem>
                         )}
                     />
-                    <Button disabled={false} size="lg" className="w-full">
+                    <Button disabled={isPending} size="lg" className="w-full">
                         Login
                     </Button>
                     </form>
@@ -104,7 +107,7 @@ export const SignInCard = () => {
             <CardContent className="p-7 flex flex-col gap-y-4">
 
             <Button
-            disabled={false}
+            disabled={isPending}
             variant="secondary"
             size="lg" 
             className="W-full"
@@ -113,7 +116,7 @@ export const SignInCard = () => {
                 Login with Google
             </Button>
             <Button
-            disabled={false}
+            disabled={isPending}
             variant="secondary"
             size="lg"
             className="W-full"
@@ -128,7 +131,7 @@ export const SignInCard = () => {
             <CardContent className="p-7 flex items-center justify-center">
 
                         <p>
-                            Don&apos;t have an account?
+                            Don't have an account?
                             <Link href="/sign-up">
                             <span className="text-blue-700">
                             &nbsp;Sign Up

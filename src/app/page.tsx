@@ -1,29 +1,16 @@
-"use client";
+import {redirect} from "next/navigation";
 
-import { useRouter } from "next/navigation";
-import {useEffect } from "react";
-import{useLogout} from "@/features/auth/api/use-logout";
-import{ useCurrent } from "@/features/auth/api/use-current";
-import { LogOut } from "lucide-react";
+import{getCurrent} from "@/features/auth/actions"
+import { UserButton } from "@/features/auth/components/user-button";
 
-export default function Home() {
-    const router =useRouter();
-    const { data, isLoading }= useCurrent(); 
-    const { mutate } = useLogout();
+export default async function Home() {
+  const user = await getCurrent();
 
-    useEffect(() => {
-        if (!data && !isLoading )  {
-        router.push("/sign-in");
-        }
-    }, [data]);
-
-
+  if(!user) redirect ("/sign-in");
+  
     return (
         <div >
-            only visible to authorized users.   
-            <button onClick={() => mutate()}>
-                Logout
-                </button>  
+            <UserButton/>
         </div>
     );
 };
