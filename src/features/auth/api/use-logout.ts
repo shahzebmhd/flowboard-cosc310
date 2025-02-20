@@ -1,6 +1,7 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {InferRequestType, InferResponseType} from "hono";
 import {client} from "@/lib/rpc";
+import { useRouter } from "next/navigation";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -10,8 +11,9 @@ type ResponseType = InferResponseType<typeof client.api.auth.logout["$post"]>;
 
 
 export const useLogout = () => {
+    const router = useRouter();
     const queryClient = useQueryClient();
-    return useMutation<
+    const mutation = useMutation<
         ResponseType,
         Error
     >({
@@ -22,7 +24,10 @@ export const useLogout = () => {
             return await response.json();
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["current"]});
+            router.refresh();
+            queryClient.invalidateQueries({queryKey:["current"]});
         }
     });
-}
+
+    return mutation;
+};
