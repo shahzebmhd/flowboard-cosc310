@@ -5,6 +5,8 @@ import {cn} from "@/lib/utils";
 import "./globals.css";
 import {QueryProvider} from "@/components/query-provider";
 
+const inter = Inter({subsets: ["latin"]});
+
 
 const inter = Inter({ subsets: ["latin"]});
 
