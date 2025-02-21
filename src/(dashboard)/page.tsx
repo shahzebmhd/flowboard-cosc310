@@ -12,4 +12,4 @@ export default async function Home() {
             This is a home page
         </div>
     );
-};
+}
