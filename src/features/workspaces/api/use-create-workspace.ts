@@ -1,6 +1,7 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {InferRequestType, InferResponseType} from "hono";
 import {client} from "@/lib/rpc";
+import {toast} from "sonner";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -23,7 +24,11 @@ export const useCreateWorkspace = () => {
             return await response.json();
         },
         onSuccess: () => {
+            toast.success("Workspace created");
             queryClient.invalidateQueries({queryKey: ["workspaces"]});
+        },
+        onError: () => {
+            toast.error("Failed to create Workspace");
         }
     });
 }
