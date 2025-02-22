@@ -17,10 +17,10 @@ export const useCreateWorkspace = () => {
         Error,
         RequestType
     >({
-        mutationFn: async ({json}) => {
+        mutationFn: async ({form}) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
-            const response = await client.api.workspaces["$post"]({json});
+            const response = await client.api.workspaces["$post"]({form});
             return await response.json();
         },
         onSuccess: () => {
