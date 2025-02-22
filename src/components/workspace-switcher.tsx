@@ -2,6 +2,7 @@
 import {useGetWorkspace} from "@/features/workspaces/api/use-get-workspace";
 import {RiAddCircleFill} from "react-icons/ri";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {WorkspaceAvatar} from "@/features/workspaces/components/WorkspaceAvatar";
 
 export const WorkspaceSwitcher = () => {
     const {data: workspaces} = useGetWorkspace();
@@ -20,7 +21,10 @@ export const WorkspaceSwitcher = () => {
                 <SelectContent>
                     {workspaces?.documents.map(workspace => (
                         <SelectItem key={workspace.$id} value={workspace.$id}>
-                            {workspace.name}
+                            <div className="flex items-center gap-2">
+                                <WorkspaceAvatar name={workspace.name} image={workspace.imageUrl} />
+                                <span className="truncate">{workspace.name}</span>
+                            </div>
                         </SelectItem>
                     ))}
                 </SelectContent>

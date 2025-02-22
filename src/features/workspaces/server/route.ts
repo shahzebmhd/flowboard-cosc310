@@ -4,7 +4,6 @@ import {createWorkspaceSchema} from "@/features/workspaces/schemas";
 import {sessionMiddleware} from "@/lib/session-middleware";
 import {DATABASE_ID, IMAGES_BUCKET_ID, WOKRSPACES_ID} from "@/config";
 import {ID} from "node-appwrite";
-import Image from "next/image"
 
 const app = new Hono()
     .get("/", sessionMiddleware, async (c) => {
