@@ -6,8 +6,18 @@ import {DATABASE_ID, WOKRSPACES_ID} from "@/config";
 import {ID} from "node-appwrite";
 
 const app = new Hono()
-    .post("/", zValidator("json", createWorkspaceSchema),sessionMiddleware,
-        async(c) =>{
+    .get("/", sessionMiddleware, async (c) => {
+        const databases = c.get("databases");
+
+        const workspaces = await databases.listDocuments(
+            DATABASE_ID,
+            WOKRSPACES_ID,
+        );
+
+        return c.json({data: workspaces});
+    })
+    .post("/", zValidator("json", createWorkspaceSchema), sessionMiddleware,
+        async (c) => {
             const databases = c.get("databases");
             const user = c.get("user");
 
@@ -23,8 +33,19 @@ const app = new Hono()
                 },
             )
 
-            return c.json({data:workspaces});
+            return c.json({data: workspaces});
         }
     )
 ;
+
+
+app.get(
+    "/current",
+    sessionMiddleware,
+    (c) => {
+        const user = c.get("user");
+
+        return c.json({data: user});
+    }
+);
 export default app;
