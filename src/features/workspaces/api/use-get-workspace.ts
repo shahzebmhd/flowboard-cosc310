@@ -8,6 +8,7 @@ export const useGetWorkspace = () => {
         queryFn: async () => {
             // @ts-expect-error client type is actually known
             const response = await client.api.workspaces.$get();
+            console.log(response);
 
             if (!response.ok) {
                 throw new Error("failed to fetch workspaces");
