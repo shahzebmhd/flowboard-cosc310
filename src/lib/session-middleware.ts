@@ -53,5 +53,9 @@ export const sessionMiddleware = createMiddleware<AdditionalContext>(
         c.set("user",user);
 
         await next();
+
+
+
+
     },
 );
