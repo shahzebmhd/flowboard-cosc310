@@ -51,15 +51,15 @@ const app = new Hono()
                     image
                 );
 
-                const arratBuffer = await storage.getFilePreview(
+                const arrayBuffer = await storage.getFilePreview(
                     IMAGES_BUCKET_ID,
                     file.$id,
                 );
 
-                uploadedImageUrl = `data:image/png;base64,${Buffer.from(arratBuffer).toString("base64")}`
+                uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`
             }
 
-            const workspaces = await databases.createDocument(
+            const workspace = await databases.createDocument(
                 DATABASE_ID,
                 WOKRSPACES_ID,
                 ID.unique(),
@@ -77,13 +77,13 @@ const app = new Hono()
                 ID.unique(),
                 {
                     userId: user.$id,
-                    workspaceId: workspaces.$id,
+                    workspaceId: workspace.$id,
                     role: MemberRole.ADMIN,
                 },
             )
 
 
-            return c.json({data: workspaces});
+            return c.json({data: workspace});
         }
     )
 ;
