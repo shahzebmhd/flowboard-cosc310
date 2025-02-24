@@ -8,7 +8,7 @@ import {
 
 import {
     Drawer,
-    DrawerContent
+    // DrawerContent // tutorial includes but this is not used
 } from "@/components/ui/drawer";
 
 interface ResponsiveModalProps {
@@ -41,6 +41,6 @@ export const ResponsiveModal = ({
                 </div>
             </DialogContent>
         </Drawer> 
-    )
+    );
 
 };
