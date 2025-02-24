@@ -6,6 +6,16 @@ import {DATABASE_ID, IMAGES_BUCKET_ID, WOKRSPACES_ID} from "@/config";
 import {ID} from "node-appwrite";
 
 const app = new Hono()
+    .get("/", sessionMiddleware, async (c) => {
+        const databases = c.get("databases");
+
+        const workspaces = await databases.listDocuments(
+            DATABASE_ID,
+            WOKRSPACES_ID,
+        );
+
+        return c.json({data: workspaces});
+    })
     .post("/", zValidator("form", createWorkspaceSchema), sessionMiddleware,
         async (c) => {
             const databases = c.get("databases");
@@ -46,4 +56,15 @@ const app = new Hono()
         }
     )
 ;
+
+
+app.get(
+    "/current",
+    sessionMiddleware,
+    (c) => {
+        const user = c.get("user");
+
+        return c.json({data: user});
+    }
+);
 export default app;
