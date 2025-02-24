@@ -7,7 +7,6 @@ import {WorkspaceAvatar} from "@/features/workspaces/components/WorkspaceAvatar"
 export const WorkspaceSwitcher = () => {
     const {data: workspaces} = useGetWorkspace();
 
-
     return (
         <div className="flex flex-col gap-y-2">
             <div className="flex items-center justify-between">
