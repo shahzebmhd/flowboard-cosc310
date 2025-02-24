@@ -13,12 +13,15 @@ import {useCreateWorkspace} from "@/features/workspaces/api/use-create-workspace
 import {Avatar, AvatarFallback} from "@/components/ui/avatar";
 import Image from "next/image"
 import {ImageIcon} from "lucide-react";
+import { useRouter } from "next/navigation";
+
 
 interface CreateWorkspaceFormProps {
     onCancel?: () => void;
 }
 
 export const CreateWorkspaceForm = ({onCancel}: CreateWorkspaceFormProps) => {
+    const router = useRouter();
     const {mutate, isPending} = useCreateWorkspace();
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -34,9 +37,10 @@ export const CreateWorkspaceForm = ({onCancel}: CreateWorkspaceFormProps) => {
             ...values,
             image: values.image instanceof File ? values.image : "",
         }
-        mutate({form: finalValues}, {
-            onSuccess: () => {
+        mutate({ form: finalValues}, {
+            onSuccess: ({ data }) => {
                 form.reset();
+                router.push(`/workspaces/${data.$id}`);
                 //todo redirect to new workspace
             }
         });
@@ -95,7 +99,7 @@ export const CreateWorkspaceForm = ({onCancel}: CreateWorkspaceFormProps) => {
                                             ) : (
                                                 <Avatar className={"size-[72px]"}>
                                                     <AvatarFallback>
-                                                        <ImageIcon className={"size-[37px] text-neutral-400"}/>
+                                                        <ImageIcon className={"size-[36px] text-neutral-400"}/>
                                                     </AvatarFallback>
                                                 </Avatar>
                                             )}
