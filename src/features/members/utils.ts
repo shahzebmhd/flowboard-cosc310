@@ -1,8 +1,8 @@
-import {Query, type databases } from "node-appwrite";
+import {Query, type Databases } from "node-appwrite";
 
 import {DATABASE_ID, MEMBERS_ID } from "@/config";
 interface GetMemberProps {
-    databases: databases;
+    databases: Databases;
     workspaceId: string;
     userId: string;
 }
@@ -21,5 +21,5 @@ export const getMember = async ({
         ]
     );
 
-    return members.documetns[0];
+    return members.documents[0];
 };

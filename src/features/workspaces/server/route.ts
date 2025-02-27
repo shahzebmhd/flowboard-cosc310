@@ -90,9 +90,9 @@ app.patch(
     const { workspaceId } = c.req.param();
     const { name, image } = c.req.valid("form");
 
-    const member = getMember({
+    const member = await getMember({
       databases,
-      workspaceId, // Fixed typo
+      workspaceId, 
       userId: user.$id,
     });
 
