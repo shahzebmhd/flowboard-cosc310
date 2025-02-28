@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createWorkspaceSchema } from "@/features/workspaces/schemas";
+
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { z } from "zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,35 +9,42 @@ import { DottedSeparator } from "@/components/ui/dotted-separator";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCreateWorkspace } from "@/features/workspaces/api/use-create-workspace";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { updateWorkspaceSchema } from "../schemas";
+import { useUpdateWorkspace } from "../api/use-update-workspace";
+import { Workspace } from "../types";
 
-interface CreateWorkspaceFormProps {
+
+interface EditWorkspaceFormProps {
     onCancel?: () => void;
-}
+    initialValues: Workspace;
+};
 
-export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
+export const EditWorkspaceForm = ({ onCancel, initialValues}: EditWorkspaceFormProps) => {
     const router = useRouter();
-    const { mutate, isPending } = useCreateWorkspace();
+    const { mutate, isPending } = useUpdateWorkspace();
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const form = useForm<z.infer<typeof createWorkspaceSchema>>({
-        resolver: zodResolver(createWorkspaceSchema),
+    const form = useForm<z.infer<typeof updateWorkspaceSchema>>({
+        resolver: zodResolver(updateWorkspaceSchema),
         defaultValues: {
-            name: "",
+           ...initialValues,
+           image: initialValues.imageUrl ?? "",
         },
     });
 
-    const onSubmit = (values: z.infer<typeof createWorkspaceSchema>) => {
+    const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
         const finalValues = {
             ...values,
-            image: values.image instanceof File ? values.image : "",
+            image: values.image instanceof File ? values.image : undefined, // Deleted all images from AppWrite
         };
         mutate(
-            { form: finalValues },
+            { form: finalValues,
+                param: {workspaceId: initialValues.$id}
+            },
             {
                 onSuccess: ({ data }) => {
                     form.reset();
@@ -47,10 +54,17 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
         );
     };
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            form.setValue("image",file);
+        }
+    };
+
     return (
         <Card className="w-full h-full border-none shadow-none">
             <CardHeader className="flex p-7">
-                <CardTitle className="text-xl font-bold">Create a new workspace</CardTitle>
+                <CardTitle className="text-xl font-bold">{initialValues.name}</CardTitle>
             </CardHeader>
             <div className="px-7">
                 <DottedSeparator />
