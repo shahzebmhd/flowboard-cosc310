@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
-import { ImageIcon } from "lucide-react";
+import { ArrowLeftIcon, ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { updateWorkspaceSchema } from "../schemas";
 import { useUpdateWorkspace } from "../api/use-update-workspace";
@@ -39,7 +39,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues}: EditWorkspaceFormP
     const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
         const finalValues = {
             ...values,
-            image: values.image instanceof File ? values.image : undefined, 
+            image: values.image instanceof File ? values.image : "", 
         };
         mutate(
             { form: finalValues,
@@ -60,10 +60,18 @@ export const EditWorkspaceForm = ({ onCancel, initialValues}: EditWorkspaceFormP
             form.setValue("image",file);
         }
     };
-
+// TODO: Create Workspaces --> Save Changes 
+// Failed to create workspaces 405 Error code, that means method not found
+// Delete workspaces to clear 
+// TODO: create workspaces, create a function to delete image 
+// TODO: remove button page in this page aswell. 
     return (
         <Card className="w-full h-full border-none shadow-none">
-            <CardHeader className="flex p-7">
+            <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y">
+                <Button size="sm" variant="secondary" onClick ={onCancel ? onCancel : ()=> {router.push(`/workspaces/${initialValues.$id}`)}}>
+                <ArrowLeftIcon className="size-4 mr-2"/>
+                    Back
+                </Button>
                 <CardTitle className="text-xl font-bold">{initialValues.name}</CardTitle>
             </CardHeader>
             <div className="px-7">

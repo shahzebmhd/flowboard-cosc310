@@ -15,6 +15,7 @@ import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+// TODO: remove image button
 interface CreateWorkspaceFormProps {
     onCancel?: () => void;
 }
