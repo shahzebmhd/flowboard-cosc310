@@ -7,14 +7,14 @@ export const getWorkspaces = async () =>{
         .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
         .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
      const session = (await cookies()).get(AUTH_COOKIE);
-     
+
      if (!session) return { documents: [], total: 0 };
      client.setSession(session.value);
- 
+
      const databases =new Databases(client);
      const account = new Account(client);
      const user = await account.get();
- 
+
      const member = await databases.listDocuments(
         DATABASE_ID,
         MEMBERS_ID,
@@ -40,8 +40,6 @@ export const getWorkspaces = async () =>{
     return workspaces;
     }catch {
         return { documents: [], total: 0 };
-        
+
     }
-    
-   
 }
