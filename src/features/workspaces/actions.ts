@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { Databases, Client, Query, Account } from "node-appwrite";
 import { AUTH_COOKIE } from "@/features/auth/constants";
-import { DATABASE_ID, MEMBERS_ID, WOKRSPACES_ID } from "@/config";
+import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 export const getWorkspaces = async () =>{
     try{const client =new Client()
         .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
@@ -30,7 +30,7 @@ export const getWorkspaces = async () =>{
 
     const workspaces = await databases.listDocuments(
         DATABASE_ID,
-        WOKRSPACES_ID,
+        WORKSPACES_ID,
         [
             Query.orderDesc("$createdAt"),
             Query.contains("$id", workspaceIds)
