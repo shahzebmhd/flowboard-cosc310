@@ -1,27 +1,25 @@
 import { getCurrent } from "@/features/auth/actions";
+import { getWorkspace } from "@/features/workspaces/actions";
+import { EditWorkspaceForm } from "@/features/workspaces/components/edit-workspace-form";
 import { redirect } from "next/navigation";
-
 interface WorkspaceIdSettingsPageProps {
-    params: {
-        workspaceId: string;
-    };
+    params: { workspaceId: string };
 };
-// TODO: npm run dev, to check workspaces redirection to show a standalone layout WorkspaceIdSettingsPage: 6700.... 
-const WorkspaceIdSettingsPage = async ({
-    params,
-}) => {
+
+const WorkspaceIdSettingsPage = async ({ params }: WorkspaceIdSettingsPageProps) => {
     const user = await getCurrent();
     if (!user) redirect("/sign-in");
 
-
-    const initialValues = await getWorkspace({ workspaceId: params.workspaceId })
+    const initialValues = await getWorkspace({ workspaceId: params.workspaceId });
     if (!initialValues) {
         redirect(`/workspaces/${params.workspaceId}`);
     }
+
     return (
-        <div clasName="w-full lg:max-w-xl">
-            <EditWorkspaceForm initialValues={initialValues}/> 
+        <div className="w-full lg:max-w-xl"> 
+            <EditWorkspaceForm initialValues={initialValues} /> 
         </div>
-    )  
-}
-export default WorkspaceIdSettingsPage
+    );  
+};
+
+export default WorkspaceIdSettingsPage;

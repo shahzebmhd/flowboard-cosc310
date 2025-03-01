@@ -39,7 +39,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues}: EditWorkspaceFormP
     const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
         const finalValues = {
             ...values,
-            image: values.image instanceof File ? values.image : undefined, // Deleted all images from AppWrite
+            image: values.image instanceof File ? values.image : undefined, 
         };
         mutate(
             { form: finalValues,

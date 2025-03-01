@@ -79,7 +79,7 @@ app.post(
 
 // Update workspace details
 app.patch(
-  "/:workspaceId",
+  "/:workspaceId", // Biggest issue we wont always have ID in our URL
   sessionMiddleware,
   zValidator("form", updateWorkspaceSchema),
   async (c) => {

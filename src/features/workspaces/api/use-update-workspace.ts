@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
-type ResponseType = InferResponseType<typeof client.api.workspaces[":workspaceId"]["$patch"], 200>;
+type ResponseType = InferResponseType<typeof client.api.workspaces[":workspaceId"]["$patch"], 200>; //only success response received with 200
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 type RequestType = InferRequestType<typeof client.api.workspaces[":workspaceId"]["$patch"]>; 
