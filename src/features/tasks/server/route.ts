@@ -1,7 +1,8 @@
 import {Hono, Context} from "hono";
 import {sessionMiddleware} from "@/lib/session-middleware";
-import {DATABASE_ID, MEMBERS_ID, TASKS_ID} from "@/config";
+import {DATABASE_ID, MEMBERS_ID, TASKS_ID, WORKSPACES_ID} from "@/config";
 import {ID, Query} from "node-appwrite";
+import {taskSchema} from "@/features/tasks/schemas";
 
 const app = new Hono()
     .get("/getProjectTasks", sessionMiddleware, async (c) => {
@@ -16,68 +17,94 @@ const app = new Hono()
             const userId = user.$id;
 
             //check if user has access to workspace and the workspace exists
+            const exist = await databases.listDocuments(
+                DATABASE_ID,
+                WORKSPACES_ID,
+                [Query.equal("workspaceId", queryParams.workspaceId)]
+            )
+
+            if (exist.total == 0) { // workspace doesn't exist
+                return c.json({error: "Not found"}, 404);
+            }
+
             const access = await databases.listDocuments(
                 DATABASE_ID,
                 MEMBERS_ID,
-                [Query.equal("userId", userId),
-                    Query.equal("workspaceId", queryParams.workspaceId)]
+                [Query.equal("userId", userId)]
             )
-            if (access.total == 0) { // user doesn't have access to workspace or workspace doesn't exist
-                return c.json({error: "Forbidden"}, 403); //todo not sure if 401 or 403
+            if (access.total == 0) { // user doesn't have access to workspace
+                return c.json({error: "Not found"}, 404); //fix
             }
 
             // Prepare task data
             const taskData = {
                 //required fields
-                dueDate: queryParams.dueDate ? new Date(queryParams.dueDate) : undefined,
                 assignedUserId: [user.$id],
-                priority: queryParams.priority,
-                status: queryParams.status,
                 title: queryParams.title,
                 createdAt: new Date().toISOString(),
                 workspaceId: queryParams.workspaceId,
+                locked: queryParams.dueDate ? queryParams.dueDate : false,
 
                 //optional fields
+                dueDate: queryParams.dueDate ? new Date(queryParams.dueDate) : undefined,
                 description: queryParams.description,
                 createdByUserId: user.$id,
+                priority: queryParams.priority,
+                status: queryParams.status,
             };
 
-            //todo some sort of validation should be done
-            //
             // Validate and clean data
-            // const validatedTask = taskSchema.parse(taskData);
-            //
+            const validatedTask = taskSchema.parse(taskData);
             // Remove undefined values
-            // const cleanedTask = Object.fromEntries(
-            //     Object.entries(validatedTask).filter(([_, value]) => value !== undefined)
-            // );
+            const cleanedTask = Object.fromEntries(
+                Object.entries(validatedTask).filter(([_, value]) => value !== undefined)
+            );
+            console.log(cleanedTask);
 
             const task = await databases.createDocument(
                 DATABASE_ID,
                 TASKS_ID,
                 ID.unique(),
-                taskData
+                cleanedTask
             );
 
             return c.json({data: task});
         }
-    ).post("/deleteTask", sessionMiddleware,
+    ).post("/deleteTask", sessionMiddleware, //todo
         async (c) => {
             const databases = c.get("databases");
             const user = c.get("user");
             const queryParams = c.req.query();
             const userId = user.$id;
 
-            //check if user has access to workspace and the workspace exists
+            //check if task exist:
+            const exist = await databases.listDocuments(
+                DATABASE_ID,
+                MEMBERS_ID, // Assuming this is the collection for workspace members
+                [
+                    Query.equal("$id", queryParams.taskId),
+                ]
+            );
+            if (exist.total === 0) {
+                // User does not have access to the workspace
+                return c.json({error: "Not found"}, 404);
+            }
+
+
+            //check if user have access to task
             const access = await databases.listDocuments(
                 DATABASE_ID,
-                MEMBERS_ID,
-                [Query.equal("userId", userId),
-                    Query.equal("workspaceId", queryParams.workspaceId)]
-            )
-            if (access.total == 0) { // user doesn't have access to the workspace or the workspace doesn't exist
-                return c.json({error: "Forbidden"}, 403); //todo not sure if 401 or 403
+                MEMBERS_ID, // Assuming this is the collection for workspace members
+                [
+                    Query.equal("workspaceId", queryParams.workspaceId),
+                    Query.equal("userId", queryParams.userId) // Assuming userId is available in queryParams
+                ]
+            );
+            if (access.total === 0) {
+                // User does not have access to the workspace
+                return c.json({error: "Forbidden"}, 403);
             }
+
 
             const task = await databases.deleteDocument(
                 DATABASE_ID,
@@ -87,6 +114,8 @@ const app = new Hono()
 
             return c.json({data: task});
         }
+        //todo set task lock status
+        //todo update task
     );
 
 export default app;
