@@ -10,6 +10,15 @@ const progressListEl = document.getElementById("doing-list");
 const completeListEl = document.getElementById("done-list");
 const onHoldListEl = document.getElementById("on-hold-list");
 
+const STATUS_MAP = {
+	"TODO": 0,
+	"DOING": 1,
+	"DONE": 2,
+	"ON_HOLD": 3
+};
+
+
+
 // Items
 let updatedOnLoad = false;
 
@@ -25,6 +34,42 @@ let draggedItem;
 let dragging = false;
 let currentColumn;
 let lastClickedTicketColumn;
+
+async function loadTasksFromJSON() {
+	try {
+		console.log ("Fetching test.json...");
+		const response = await fetch ("/test.json");
+		if (!response.ok) throw new Error ("Failed to load test.json");
+		console.log("test.json loaded successfully!");
+		const data = await response.json();
+		console.log("Parsed JSON data:", data);
+		const tasks = data?.data?.documents || [];
+		
+		backlogListArray = [];
+		progressListArray = [];
+		completeListArray = [];
+		onHoldListArray = [];
+		listArrays = [backlogListArray, progressListArray, completeListArray, onHoldListArray];
+
+
+		tasks.forEach ( task => {
+			const status = task.status;
+			const title = task.title;
+			if (STATUS_MAP[status] !== undefined) {
+				listArrays[STATUS_MAP[status]].push(title);
+			}
+		});
+		console.log("Final task arrays from test.json:", listArrays);
+		updateSavedColumns();
+		updateDOM();
+	} catch (error) {
+		console.log("error");
+		console.error("Error loading test.json: ", error);
+		getSavedColumns();
+        updateDOM();
+	}
+}
+loadTasksFromJSON();
 
 // Get Arrays from localStorage if available, set default values if not
 function getSavedColumns() {
@@ -104,6 +149,7 @@ function hi(event){
 function updateDOM() {
     // Check localStorage once
     if (!updatedOnLoad) {
+		loadTasksFromJSON();
         getSavedColumns();
     }
     // Backlog Column
@@ -144,11 +190,11 @@ function updateItem(id, column) {
         const newText = selectedColumn[id]?.textContent?.trim();
         if (!newText) {
             delete selectedArray[id];
-            alert("Task deleted successfully!");
+            console.log("Task deleted successfully!");
         } else {
             selectedArray[id] = newText;
             if (previousText && previousText !== newText) {
-                alert("Task updated successfully!");
+                console.log("Task updated successfully!");
             }
         }
         updateDOM();
@@ -163,7 +209,7 @@ function addToColumn(column) {
         selectedArray.push(itemText);
         addItems[column].textContent = "";
         updateDOM(column);
-        alert("Task created successfully!");
+        console.log("Task created successfully!");
     }
 
 }
