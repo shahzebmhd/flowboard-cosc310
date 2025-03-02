@@ -142,7 +142,6 @@ export const EditWorkspaceForm = ({onCancel, initialValues}: EditWorkspaceFormPr
                                                     Remove Image
                                                 </Button>
                                             ) : (
-                                                // TODO: BUG - Upload button not working
                                                 <Button type={'button'} disabled={isPending} variant={"tertiary"}
                                                         size={"xs"} className={"w-fit mt-2"}
                                                         onClick={() => inputRef.current?.click()}>
