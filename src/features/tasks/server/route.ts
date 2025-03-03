@@ -128,14 +128,22 @@ async function readTasks(c: Context, filterCondition: string[]) {
     const userId = user.$id;
 
     //check if user has access to workspace and the workspace exists
+    const exist = await databases.listDocuments(
+        DATABASE_ID,
+        WORKSPACES_ID,
+        [Query.equal("$id", queryParams.workspaceId)]
+    )
+    if (exist.total==0){
+        return c.json({error: "Not found"}, 404);
+    }
+
     const access = await databases.listDocuments(
         DATABASE_ID,
         MEMBERS_ID,
-        [Query.equal("userId", userId),
-            Query.equal("workspaceId", queryParams.workspaceId)]
+        [Query.equal("userId", userId)]
     )
     if (access.total == 0) { // user doesn't have access to workspace or workspace doesn't exist
-        return c.json({error: "Forbidden"}, 403); //todo not sure if 401 or 403
+        return c.json({error: "Forbidden"}, 403);
     } else {
         const tasks = await databases.listDocuments(
             DATABASE_ID,
