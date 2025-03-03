@@ -2,7 +2,7 @@ import {Hono} from "hono";
 import {zValidator} from "@hono/zod-validator";
 import {createWorkspaceSchema} from "@/features/workspaces/schemas";
 import {sessionMiddleware} from "@/lib/session-middleware";
-import {DATABASE_ID, IMAGES_BUCKET_ID, MEMBERS_ID, WOKRSPACES_ID} from "@/config";
+import {DATABASE_ID, IMAGES_BUCKET_ID, MEMBERS_ID, WORKSPACES_ID} from "@/config";
 import {ID, Query} from "node-appwrite";
 import {MemberRole} from "@/features/members/type";
 import {generateInviteCode} from "@/lib/utils";
@@ -27,7 +27,7 @@ const app = new Hono()
 
         const workspaces = await databases.listDocuments(
             DATABASE_ID,
-            WOKRSPACES_ID,
+            WORKSPACES_ID,
             [Query.orderDesc("$createdAt"),
                 Query.contains("$id", workspaceIds)]
         );
@@ -61,7 +61,7 @@ const app = new Hono()
 
             const workspace = await databases.createDocument(
                 DATABASE_ID,
-                WOKRSPACES_ID,
+                WORKSPACES_ID,
                 ID.unique(),
                 {
                     name,
