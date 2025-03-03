@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Navigation } from "./ui/navigation";
+import { Navigation } from "./navigation";
 import { DottedSeparator } from "./ui/dotted-separator";
 import {WorkspaceSwitcher} from "@/components/workspace-switcher";
 
