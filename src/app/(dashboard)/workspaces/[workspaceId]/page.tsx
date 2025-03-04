@@ -1,4 +1,4 @@
-import { getCurrent } from "@/features/auth/queries";
+import { getCurrent } from "@/features/auth/actions";
 import { redirect } from "next/navigation";
 
 const WorkspaceIdPage = async () => {
