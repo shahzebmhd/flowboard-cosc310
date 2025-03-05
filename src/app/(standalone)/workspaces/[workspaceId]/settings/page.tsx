@@ -3,7 +3,8 @@ import { getWorkspace } from "@/features/workspaces/queries";
 import { EditWorkspaceForm } from "@/features/workspaces/components/edit-workspace-form";
 import { redirect } from "next/navigation";
 interface WorkspaceIdSettingsPageProps {
-    params: { workspaceId: string };
+    params: { workspaceId: string;
+    };
 };
 
 const WorkspaceIdSettingsPage = async ({ params }: WorkspaceIdSettingsPageProps) => {
