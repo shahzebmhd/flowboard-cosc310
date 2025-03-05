@@ -1,0 +1,31 @@
+name: CI/CD Pipeline
+
+# Trigger the workflow on push to the main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    # Specify the operating system for the runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Replace with your desired Node.js version
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run the specific Jest test
+      - name: Run Jest test
+        run: npx jest __tests__/testMustPass.js
