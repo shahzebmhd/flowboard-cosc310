@@ -28,4 +28,4 @@ jobs:
 
       # Step 4: Run the specific Jest test
       - name: Run Jest test
-        run: npx jest __tests__/testMustPass.js
+        run: npx jest __tests__/testMustFail.js
