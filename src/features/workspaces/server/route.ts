@@ -123,7 +123,7 @@ app.patch(
       return c.json({ data: workspace });
     }
   );
-  
+
 app.get(
     "/current",
     sessionMiddleware,
@@ -132,5 +132,37 @@ app.get(
 
         return c.json({data: user});
     }
-);
+)
+
+.post(
+    "/:workspaceId/reset-invite-code",
+    sessionMiddleware,
+    async(c) => {
+        const databases = c.get("databases");
+        const user = c.get("user");
+
+        const {workspaceId} = c.req.param();
+
+        const member =await getMember({
+            databases,
+            workspaceId,
+            userId: user.$id,
+        });
+
+        if (!member || member.role !== MemberRole.ADMIN){
+            return c.json({error: "Unauthorized"}, 401);
+        }
+
+        const workspace =await databases.updateDocument(
+            DATABASE_ID, WORKSPACES_ID, workspaceId,
+            {inviteCode: generateInviteCode(6)},
+            );
+            return c.json({data: workspace});
+    }
+
+)
 export default app;
+
+function post(arg0: string, sessionMiddleware: (c: any) => Promise<any>, arg2: unknown) {
+    throw new Error("Function not implemented.");
+}
