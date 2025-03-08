@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: run test when new code comes in
 
 # Trigger the workflow on push to the main branch
 on:
@@ -26,6 +26,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Run the specific Jest test
+      # Step 4: Start server
+      - name: Install dependencies
+        run: next dev --experimental-https    
+
+      # Step 5: Run the specific Jest test
       - name: Run Jest test
         run: npx jest __tests__/testMustFail.js
