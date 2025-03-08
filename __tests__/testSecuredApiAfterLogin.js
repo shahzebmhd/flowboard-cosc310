@@ -23,7 +23,7 @@ describe('api after login test', () => {
         }
 
         //add the key we just got to our request
-        const response = await client.get("https://localhost:3000/api/tasks/getProjectTasks?workspaceId=67c3d4ff0007e9582c93", {
+        const response = await client.get("https://localhost:3000/api/workspaces", {
             headers: {
                 'Cookie': `flowboard-flowboard-cosc310-session=${key}`
             }
@@ -33,7 +33,7 @@ describe('api after login test', () => {
         //const response = await client.get("https://localhost:3000");
 
         //check the response we got
-        expect(response.status).toBe(200);
+        expect(response.status).toEqual(200);
         expect(response.data).toBeDefined();
     });
 });
