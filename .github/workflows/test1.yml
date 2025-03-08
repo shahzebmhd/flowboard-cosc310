@@ -1,4 +1,4 @@
-name: run test when new code comes in
+name: Run Test When New Code Comes In
 
 # Trigger the workflow on push to the main branch
 on:
@@ -26,10 +26,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Start server
+      # Step 4: Start server in the background
       - name: Start server
-        run: npm run dev:https    
+        run: |
+          nohup npm run dev:https > server.log 2>&1 &
+          sleep 15 # Wait for the server to start (adjust the time as needed)
 
       # Step 5: Run the specific Jest test
       - name: Run Jest test
-        run: npx jest __tests__/testMustFail.js
+        run: npx jest __tests__/testMustPass.js
+
+      # Optional: Stop the server after testing
+      - name: Stop server
+        if: always() # Ensure this step runs regardless of test success/failure
+        run: pkill -f "next dev"
