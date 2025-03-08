@@ -34,7 +34,7 @@ jobs:
 
       # Step 5: Run the specific Jest test
       - name: Run Jest test
-        run: npx jest __tests__/testMustPass.js
+        run: npx jest __tests__/
 
       # Optional: Stop the server after testing
       - name: Stop server
