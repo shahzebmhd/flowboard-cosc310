@@ -28,7 +28,7 @@ jobs:
 
       # Step 4: Start server
       - name: Install dependencies
-        run: next dev --experimental-https    
+        run: npm run dev:https    
 
       # Step 5: Run the specific Jest test
       - name: Run Jest test
