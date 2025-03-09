@@ -38,6 +38,30 @@ export const getWorkspace = async ({ workspaceId }: GetWorkspaceProps) => {
     }
 };
 
+interface GetWorkspaceInfoProps {
+    workspaceId: string;
+}
+
+export const getWorkspaceInfo = async ({ workspaceId }: GetWorkspaceInfoProps) => {
+    try {
+        const {databases, account} = await createSessionClient();
+     
+        const workspace = await databases.getDocument<Workspace>(
+            DATABASE_ID,
+            WORKSPACES_ID,
+            workspaceId
+        );
+        return {
+            name: workspace.name,
+            description: workspace.description,
+            avatar: workspace.avatar,
+        }
+
+    } catch (error) {
+        console.error("Error fetching workspace:", error);
+        return null;
+    }
+};
 export const getWorkspaces = async () =>{
     try{
         const {databases, account} =await createSessionClient();
