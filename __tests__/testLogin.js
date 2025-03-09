@@ -19,7 +19,7 @@ describe('test if login is 200 when login using correctUserCredentials', () => {
     it('check if respond code is 200', async () => {
         const response = await client.post("https://localhost:3000/api/auth/login", correctUserCredentials);
         expect(response.status).toEqual(200);
-        console.log(response);
+        //console.log(response);
     })
 
     it('check if set-cookie instruction exist', async () => {
