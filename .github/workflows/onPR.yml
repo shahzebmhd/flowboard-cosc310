@@ -1,0 +1,60 @@
+name: Run Test When New Code Comes In
+
+# Trigger the workflow on push to the main branch or pull requests targeting main
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    # Specify the operating system for the runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch the full history to allow merging
+
+      # Step 2: Fetch the main branch and copy test cases
+      - name: Copy test cases from main
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin main
+          git checkout origin/main -- __tests__ # Copy test cases from main
+
+      # Step 3: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.13.0' # Replace with your desired Node.js version
+
+      # Step 4: Cache dependencies to speed up installation
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Step 5: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 6: Start server in the background
+      - name: Start server
+        run: |
+          nohup npm run dev:https > server.log 2>&1 &
+          sleep 15 # Wait for the server to start (adjust the time as needed)
+
+      # Step 7: Run the specific Jest test
+      - name: Run Jest test
+        run: npx jest __tests__/
+
+      # Optional: Stop the server after testing
+      - name: Stop server
+        if: always() # Ensure this step runs regardless of test success/failure
+        run: pkill -f "next dev"
