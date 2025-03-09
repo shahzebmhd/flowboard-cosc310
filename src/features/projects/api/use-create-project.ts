@@ -5,12 +5,12 @@ import {toast} from "sonner";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
-type ResponseType = InferResponseType<typeof client.api.workspaces["$post"]>;
+type ResponseType = InferResponseType<typeof client.api.projects["$post"],200>;
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
-type RequestType = InferRequestType<typeof client.api.workspaces["$post"]>;
+type RequestType = InferRequestType<typeof client.api.projects["$post"]>;
 
-export const useCreateWorkspace = () => {
+export const useCreateProject = () => {
     const queryClient = useQueryClient();
     return useMutation<
         ResponseType,
@@ -20,18 +20,20 @@ export const useCreateWorkspace = () => {
         mutationFn: async ({form}) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
-            const response = await client.api.workspaces["$post"]({form});
-            if (!response.ok) {
-                throw new Error("failed to create Workspace");
-            }
-            return await response.json();
-        },
+                const response = await client.api.projects["$post"]({form});
+
+                if (!response.ok) {
+                    throw new Error("failed to create project");
+                }
+                return await response.json();
+            },
+        
         onSuccess: () => {
-            toast.success("Workspace created");
-            queryClient.invalidateQueries({queryKey: ["workspaces"]});
+            toast.success("Project created");
+            queryClient.invalidateQueries({queryKey: ["projects"]});
         },
         onError: () => {
-            toast.error("Failed to create Workspace");
+            toast.error("Failed to create Project");
         }
     });
 }
