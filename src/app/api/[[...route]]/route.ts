@@ -7,7 +7,6 @@ import tasks from "@/features/tasks/server/route"
 const app = new Hono().basePath("/api");
 
 app.route("/auth", auth)
-    .route("/workspaces",workspaces)
     .route("/tasks",tasks);
 
 export const GET = handle(app);
