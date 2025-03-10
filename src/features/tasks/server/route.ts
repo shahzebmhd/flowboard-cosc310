@@ -27,7 +27,7 @@ app.get(
         })
     ),
     async (c) => {
-        const { users } = await createAdminClient(); // TODO: Need to debug
+        const { users } = await createAdminClient(); // UPDATE: added within createAdminClient get Users()
         const databases = c.get("databases");
         const user = c.get("user");
 
