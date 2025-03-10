@@ -15,10 +15,10 @@ export const TaskViewSwitcher = () => {
                         <TabsTrigger className="h-8 w-full lg:w-auto" value="kanban">
                             Kanban
                         </TabsTrigger>
-                        {/* NOT IMPLEMENTING */}
-                        <TabsTrigger className="h-8 w-full lg:w-auto" value="calendar">
+                        {/* UPDATE: NOT IMPLEMENTING AT THE MOMENT */}
+                        {/* <TabsTrigger className="h-8 w-full lg:w-auto" value="calendar">
                             Calendar
-                        </TabsTrigger>
+                        </TabsTrigger> */}
                     </TabsList>
                     <Button size="sm" className="w-full lg:w-auto">
                         <PlusIcon className="size-4 mr-2" />
