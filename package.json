@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "npm test" : "npx jest __tests__"
   },
   "dependencies": {
     "@hono/zod-validator": "0.3.0",
