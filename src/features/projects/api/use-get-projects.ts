@@ -10,6 +10,7 @@ workspaceId,
     return useQuery({
         queryKey: ["projects",workspaceId],
         queryFn: async () => {
+            // TODO: to find out
             // @ts-expect-error client type is actually known
             const response = await client.api.projects.$get({
                 query: {
