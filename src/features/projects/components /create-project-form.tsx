@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { createProjectSchema } from "../schemas";
 import { useCreateProject } from "../api/use-create-project";
 import { useCreateWorkspace } from "@/features/workspaces/api/use-create-workspace";
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
 
 interface CreateProjectFormProps {
@@ -23,7 +24,8 @@ interface CreateProjectFormProps {
 }
 
 export const CreateProjectForm = ({onCancel}: CreateProjectFormProps) => {
-    const workspaceId = useCreateWorkspace();
+    // const workspaceId = useCreateWorkspace(); // Causes projects not to be created. 
+    const workspaceId = useWorkspaceId();
     const router = useRouter();
     const {mutate, isPending} = useCreateProject();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -42,9 +44,9 @@ export const CreateProjectForm = ({onCancel}: CreateProjectFormProps) => {
             workspaceId,
         }
         mutate({ form: finalValues}, {
-            onSuccess: () => {
+            onSuccess: ({data}) => {
                 form.reset();
-                
+                router.push(`/workspaces/${workspaceId}/projects/${data.$id}`)
             }
         });
     };
