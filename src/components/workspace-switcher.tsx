@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 "use client";
 import {useGetWorkspace} from "@/features/workspaces/api/use-get-workspaces";
 import {RiAddCircleFill} from "react-icons/ri";
@@ -11,7 +12,7 @@ import { WorkspaceAvatar } from "@/features/workspaces/components/workspace-avat
 export const WorkspaceSwitcher = () => {
     const workspaceId = useWorkspaceId();
     const router = useRouter();
-    const {data: workspaces} = useGetWorkspace();
+    const {data: workspaces} = useGetWorkspace(); // done
     const { open } = useCreateWorkspaceModal();
 
     const onSelect = (id: string) => {
@@ -28,7 +29,8 @@ export const WorkspaceSwitcher = () => {
                     <SelectValue placeholder="No workspace selected"/>
                 </SelectTrigger>
                 <SelectContent>
-                    {workspaces?.documents.map((workspace) => (
+                    {/*  */}
+                    {workspaces?.documents.map((workspace: { $id: string, name: string, imageUrl: string }) => (
                         <SelectItem key={workspace.$id} value={workspace.$id}>
                             <div className="flex items-center gap-2">
                                 <WorkspaceAvatar name={workspace.name} image={workspace.imageUrl} />

@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"; 
+import React from "react";
 
-interface DottedSeperatorProps {
+interface DottedSeparatorProps {
     className?: string;
     color?: string;
     height?: string;
@@ -11,14 +12,13 @@ interface DottedSeperatorProps {
 
 export const DottedSeparator = ({
     className,
-    color,
-    height = "#d4d4d8",
+    color = "gray", // Default color fallback
+    height = "1px", // Corrected height (was previously a color)
     dotSize = "2px",
     gapSize = "6px",
     direction = "horizontal"
-}: DottedSeperatorProps) => {
+}: DottedSeparatorProps) => {
     const isHorizontal = direction === "horizontal";
-
 
     return (
         <div className={cn(
@@ -27,17 +27,17 @@ export const DottedSeparator = ({
         )}>
             <div
                 className={isHorizontal ? "flex-grow" : "flex-grow-0"}
-               style={{
-                width: isHorizontal ? "100%" : height, 
-                height: isHorizontal ? height : "100%",
-                backgroundImage: `radial-gradient(circle, ${color} 25%, transparent 25%)`,
-                backgroundSize: isHorizontal ? `${parseInt(dotSize) + parseInt(gapSize)}px ${height}`
-                : `${height} ${parseInt(dotSize) + parseInt(gapSize)} px`,
-                backgroundRepeat: isHorizontal ? "repeat-x" : "repeat-y",
-                backgroundPosition: "center",
-               }}
+                style={{
+                    width: isHorizontal ? "100%" : height, 
+                    height: isHorizontal ? height : "100%",
+                    backgroundImage: `radial-gradient(circle, ${color} 25%, transparent 25%)`,
+                    backgroundSize: isHorizontal 
+                        ? `${parseInt(dotSize) + parseInt(gapSize)}px ${height}`
+                        : `${height} ${parseInt(dotSize) + parseInt(gapSize)}px`, // Removed extra space before "px"
+                    backgroundRepeat: isHorizontal ? "repeat-x" : "repeat-y",
+                    backgroundPosition: "center",
+                }}
             />
         </div>
-    )
-
-}
+    );
+};
