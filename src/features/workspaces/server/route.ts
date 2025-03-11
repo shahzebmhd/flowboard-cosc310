@@ -82,6 +82,7 @@ const app = new Hono()
                     userId: user.$id,
                     workspaceId: workspace.$id,
                     role: MemberRole.ADMIN,
+                    name: user.name,
                 },
             )
 
@@ -168,7 +169,7 @@ app.get(
      sessionMiddleware,
      zValidator("json",z.object({code :z.string()})),
      async (c) => {
-        const workspaceId = c.req.param();
+        const workspaceId = c.req.param("workspaceId");
         const {code} = c.req.valid("json");
         const databases = c.get("databases");
         const user = c.get("user");
@@ -188,7 +189,7 @@ app.get(
             WORKSPACES_ID,
             workspaceId,
         );
-        if (!workspace.inviteCode!== code){
+        if (workspace.inviteCode !== code){
             return c.json({error: "Invalid invite code"}, 400);
         }
         await databases.createDocument(
@@ -199,6 +200,7 @@ app.get(
                 userId: user.$id,
                 workspaceId,
                 role: MemberRole.MEMBER,
+                name: user.name,
             },
         );
 
@@ -207,7 +209,3 @@ app.get(
 )
 
 export default app;
-
-function post(arg0: string, sessionMiddleware: (c: any) => Promise<any>, arg2: unknown) {
-    throw new Error("Function not implemented.");
-}
