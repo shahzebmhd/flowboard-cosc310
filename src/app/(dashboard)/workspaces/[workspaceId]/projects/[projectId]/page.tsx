@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrent } from "@/features/auth/queries";
 import { getProject } from "@/features/projects/queries";
-import { ProjectAvatar } from "@/features/projects/components /project-avatar";
+import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Button } from "@/components/ui/button";
 import { PencilIcon } from "lucide-react";
 import Link from "next/link";
