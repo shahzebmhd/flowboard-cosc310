@@ -1,3 +1,4 @@
+
 import { createSessionClient } from "@/lib/appwrite";
 export const getCurrent = async () =>{
     try{

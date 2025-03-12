@@ -16,6 +16,7 @@ import {getCookie} from "hono/cookie";
 import {createMiddleware} from "hono/factory";
 
 import {AUTH_COOKIE} from "@/features/auth/constants";
+import { Context, Next } from "hono";
 
 type AdditionalContext = {
     Variables: {
@@ -24,6 +25,16 @@ type AdditionalContext = {
         storage: StrorageType;
         users: UsersType;
         user: Models.User<Models.Preferences>;
+    }
+}
+
+export const mockAuth = async (c: Context, next: Next) => {
+    if (process.env.NODE_ENV === "development") {
+        // Add a mock user to the context
+        c.set("mockUser", {
+            id: "1",
+            username: "testuser",
+        });
     }
 }
 

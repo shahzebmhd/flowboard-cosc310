@@ -3,6 +3,8 @@ import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { ID, Query, Users } from "node-appwrite";
 
+import { mockUsers } from "@/mocks/mock-user";
+
 import { handle } from "hono/vercel";
 import auth from "@/features/auth/server/route";
 import workspaces from "@/features/workspaces/server/route"
@@ -10,7 +12,7 @@ import tasks from "@/features/tasks/server/route";
 
 import { createTaskSchema } from "@/features/tasks/schemas";
 import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config";
-import { sessionMiddleware } from "@/lib/session-middleware";
+import { mockAuth, sessionMiddleware } from "@/lib/session-middleware";
 import { getMember } from "@/features/members/utils";
 import { Project } from "@/features/projects/types";
 import { TaskStatus } from "@/features/tasks/types";
@@ -19,6 +21,11 @@ import { createAdminClient } from "@/lib/appwrite";
 const app = new Hono().basePath("/api");
 const route = app.route("/tasks", tasks);
 
+if (process.env.NODE_ENV === "development") {
+    app.use("*", mockAuth);
+} else {
+    app.use("*", sessionMiddleware);
+}
 
 app.get(
     "/",
@@ -120,6 +127,15 @@ app.post(
         const databases = c.get("databases");
         const user = c.get("user");
         
+        const { username, password } = await c.req.json();
+        let mockUser;
+        
+        if (process.env.NODE_ENV === "development") {
+            mockUser = mockUsers.find((u) => u.username === username && u.password === password);
+        } else {
+            mockUser =await authenticateUser(username, password);
+        }
+        
         const member = await getMember({
             databases,
             workspaceId,
@@ -160,6 +176,36 @@ app.post(
         
         return c.json({ data: task });
     });
+    
+    type MockUsers = typeof mockUsers;
+    const users: MockUsers[] = [
+        {
+            // @ts-expect-error
+            mockid: "1",
+            username: "testuser@hope.com",
+            password: "password123", // Hashed password
+        },
+    ];
+    
+    export const authenticateUser = async (username: string, password: string) => {
+        // Find the user in the database
+        // @ts-expect-error
+        const user = users.find((u) => u.username === username);
+        
+        if (!user) {
+            return null; // User not found
+        }
+        
+        // Compare the provided password with the hashed password
+        // @ts-expect-error
+        const isPasswordValid = user.password;
+        
+        if (!isPasswordValid) {
+            return null; // Invalid password
+        }
+        
+        return user; // Return the authenticated user
+    };
     
     app.route("/auth", auth)
     .route("/workspaces",workspaces);

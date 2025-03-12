@@ -27,11 +27,11 @@ import { registerSchema } from "@/features/auth/schemas";
 import { useRegister } from "../api/use-register";
 
 const FormInput = ({
-    name,
-    type,
-    placeholder,
-    control,
-}: {
+                       name,
+                       type,
+                       placeholder,
+                       control,
+                   }: {
     name: keyof z.infer<typeof registerSchema>;
     type: string;
     placeholder: string;
