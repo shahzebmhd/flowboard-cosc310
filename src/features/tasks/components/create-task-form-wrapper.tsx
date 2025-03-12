@@ -15,10 +15,10 @@ export const CreateTaskFormWrapper = ({ onCancel }: CreateTaskFormWrapperProps) 
     const { data: projects, isLoading: isLoadingProjects } = useGetProjects({ workspaceId });
     const { data: members, isLoading: isLoadingMembers } = useGetMembers({ workspaceId }); // TODO: uncomment after FB-3025 is merged
 
-    const projectOptions = projects?.documents.map((project: { $id: any; name: any; imageUrl: any; }) => ({ // TODO: double check if infering type here makes any difference
+    const projectOptions = projects?.documents.map((project: { $id: any; name: any; ImageUrl: any; }) => ({ // TODO: double check if infering type here makes any difference
         id: project.$id,
         name: project.name,
-        imageUrl: project.imageUrl,
+        imageUrl: project.ImageUrl,
     }));
 
     const memberOptions = members?.documents.map((member: { $id: any; name: any; }) => ({ // TODO: uncomment after FB-3025 is merged
