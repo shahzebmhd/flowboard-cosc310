@@ -126,8 +126,6 @@ describe('Workspaces API Tests', () => {
 
             // Save invite code for later use
             inviteCode = response.data.data.inviteCode;
-            console.log(response.data)
-
         });
 
         it('should fail to reset invite code without admin role', async () => {
