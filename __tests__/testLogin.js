@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {wrapper} from 'axios-cookiejar-support';
-import {describe, it} from '@jest/globals';
+import {describe, expect, it} from '@jest/globals';
 
 const client = wrapper(axios.create({
     httpsAgent: new (require('https').Agent)({
