@@ -44,15 +44,11 @@ describe('Projects API Tests', () => {
             }
         });
 
-        console.log(response)
-        console.log("sdfg")
-
         expect(response.status).toEqual(200);
         expect(response.data.data.name).toBe(workspaceName);
 
         // Save workspace ID for later use
         workspaceId = response.data.data.$id;
-        console.log(workspaceId);
     });
 
 
