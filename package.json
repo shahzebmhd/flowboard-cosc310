@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "npm test": "npx jest __tests__",
-    "dev:https": "next dev --experimental-https --experimental-https-key ./certs/key.pem --experimental-https-cert ./certs/cert.pem -H 0.0.0.0"
+    "test": "npx jest __tests__",
+    "dev:https": "next dev --experimental-https --experimental-https-key ./certificates/localhost-key.pem --experimental-https-cert ./certificates/localhost.pem"
   },
   "dependencies": {
     "@hono/zod-validator": "0.3.0",
@@ -34,6 +34,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
     "hono": "^4.6.20",
     "lucide-react": "^0.474.0",
     "next": "^14.2.24",

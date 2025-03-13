@@ -1,4 +1,6 @@
 const https = require("https");
+const {wrapper} = require("axios-cookiejar-support");
+const axios = require("axios");
 
 function loginAndGetSessionValue() {
     return new Promise((resolve, reject) => {
@@ -50,5 +52,48 @@ function loginAndGetSessionValue() {
     });
 }
 
+const client = wrapper(axios.create({
+    httpsAgent: new (require('https').Agent)({
+        rejectUnauthorized: false, // Disable certificate validation
+    }),
+}));
+
+// Base URL of your API
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://localhost:3000/" + 'api/auth';
+
+// Helper function to generate a random string for the alias
+function generateRandomAlias() {
+    return `testuser_${Math.random().toString(36).substring(7)}`;
+}
+
+async function registerAndGetSessionValue() {
+    let randomAlias = generateRandomAlias();
+    let email = `${randomAlias}@example.com`;
+
+    const registerResponse = await client.post(`${BASE_URL}/register`, {
+        name: randomAlias,
+        email,
+        password: 'password123',
+    });
+
+    //console.log(registerResponse.headers['set-cookie']);
+    return findLoginCookieValue(registerResponse.headers['set-cookie']);
+}
+
+function findLoginCookieValue(cookies) {
+    if (!Array.isArray(cookies)) {
+        throw new Error("Cookies must be provided as an array of strings.");
+    }
+
+    // Find the cookie that starts with the session name
+    const sessionCookie = cookies.find(cookie => cookie.startsWith('flowboard-flowboard-cosc310-session='));
+
+    if (!sessionCookie) {
+        return null; // Session cookie not found
+    }
+
+    return sessionCookie.split(';')[0].split("=")[1];
+}
+
 // Export the function to be used in other files
-module.exports = { loginAndGetSessionValue };
+module.exports = {loginAndGetSessionValue, findLoginCookieValue, registerAndGetSessionValue};
