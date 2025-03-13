@@ -4,6 +4,7 @@ import {
     Client,
     Account,
     Databases,
+    Users,
 } from "node-appwrite"
 import { cookies } from "next/headers";
 import { AUTH_COOKIE } from "@/features/auth/constants";
@@ -28,7 +29,8 @@ export async function createSessionClient(){
         },
         get databases() {
             return new Databases(client);
-        }
+        },
+
     };
 };
 
@@ -43,5 +45,10 @@ export async function createAdminClient() {
             return new Account (client);
     
         },
+
+        get users() {
+            return new Users(client);
+        }
+        //TODO: missing users, perhaps from FB-3025, for time being added users
     };
 }

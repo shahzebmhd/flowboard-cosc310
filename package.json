@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "npm test" : "npx jest __tests__"
+    "npm test": "npx jest __tests__",
+    "dev:https": "next dev --experimental-https --experimental-https-key ./certificates/localhost-key.pem --experimental-https-cert ./certificates/localhost.pem"
   },
   "dependencies": {
     "@hono/zod-validator": "0.3.0",
@@ -25,12 +26,13 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.2",
     "@tanstack/react-query": "^5.66.0",
+    "@tanstack/react-table": "^8.20.5",
     "@types/next": "^8.0.7",
     "axios": "^1.8.2",
     "axios-cookiejar-support": "^5.0.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.1.0",
     "hono": "^4.6.20",
     "lucide-react": "^0.474.0",
     "next": "^14.2.24",
@@ -38,7 +40,7 @@
     "node-appwrite": "^14.1.0",
     "nuqs": "^1.19.1",
     "react": "^18.3.1",
-    "react-day-picker": "^8.10.1",
+    "react-day-picker": "^9.6.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2",
     "react-icons": "^5.4.0",
