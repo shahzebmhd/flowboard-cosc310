@@ -11,6 +11,7 @@ const client = wrapper(axios.create({
     httpsAgent: new (require('https').Agent)({
         rejectUnauthorized: false, // Disable certificate validation
     }),
+    timeout:39000,
 }));
 
 // Base URL of your API
