@@ -12,6 +12,7 @@ export const getMember = async ({
     workspaceId,
     userId,
 }: GetMemberProps) => {
+    
     const members = await databases.listDocuments(
         DATABASE_ID,
         MEMBERS_ID,
