@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Hono } from "hono";
 import { getMember } from "@/features/members/utils";
 import { zValidator } from "@hono/zod-validator";
@@ -6,10 +7,12 @@ import { sessionMiddleware } from "@/lib/session-middleware";
 import { DATABASE_ID, TASKS_ID, MEMBERS_ID, PROJECTS_ID } from "@/config"; // TODO: pending code from Jessica
 import { ID, Query } from "node-appwrite";
 import { z } from "zod";
-import { TaskStatus } from "../types";
+import { TaskStatus, Task} from "../types";
 import { Project } from "@/features/projects/types"; // TODO: pending code from Jessica 
 import { createAdminClient } from "@/lib/appwrite";
 
+
+    
 const app = new Hono();
 
 app.get(
@@ -73,7 +76,7 @@ app.get(
             query.push(Query.search("name", search));
         }
 
-        const tasks = await databases.listDocuments(DATABASE_ID, TASKS_ID, query);
+        const tasks = await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, query);
 
         const projectIds = tasks.documents.map((task) => task.projectId);
         const assigneeIds = tasks.documents.map((task) => task.assigneeId);
@@ -92,12 +95,21 @@ app.get(
 
         const assignees = await Promise.all(
             members.documents.map(async (member) => {
-                const user = await users.get(member.userId);
-                return {
-                    ...member,
-                    name: user.name,
-                    email: user.email,
-                };
+                try {
+                    const user = await users.get(member.userId);
+                    return {
+                        ...member,
+                        name: user.name,
+                        email: user.email,
+                    };
+                } catch (error) {
+                    // If we can't get user data, use the member's name or a fallback
+                    return {
+                        ...member,
+                        name: member.name || `User ${member.userId.substring(0, 8)}`,
+                        email: "unknown@example.com",
+                    };
+                }
             })
         );
 
