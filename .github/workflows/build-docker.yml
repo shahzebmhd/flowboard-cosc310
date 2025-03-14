@@ -41,7 +41,14 @@ jobs:
             -nodes \
             -config openssl.cnf
 
-      # 3. Build Docker image with certificates
+      # 3. Prepare Files for Docker Image
+      - name: Prepare Files for Docker Image
+        run: |
+          mkdir -p certs
+          mv cert.pem key.pem certs/
+          ls -l certs/
+
+      # 4. Build Docker image with certificates
       - name: Build Docker Image
         run: |
           docker build \
@@ -52,14 +59,14 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
 
-      # 4. Save and compress Docker image
+      # 5. Save and compress Docker image
       - name: Save Docker Image as TAR
         run: docker save -o my-app.tar my-app:latest
 
       - name: Compress TAR
         run: gzip my-app.tar
 
-      # 5. Upload Artifact
+      # 6. Upload Artifact
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:

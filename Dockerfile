@@ -20,7 +20,7 @@ COPY . .
 RUN mkdir -p /app/certs
 
 # Copy certificates from build context (will be generated in CI)
-COPY cert.pem key.pem /app/certs/
+COPY certs/cert.pem certs/key.pem /app/certs/
 RUN chmod 644 /app/certs/cert.pem && \
     chmod 600 /app/certs/key.pem
 
