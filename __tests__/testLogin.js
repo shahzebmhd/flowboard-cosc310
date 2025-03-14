@@ -21,6 +21,9 @@ describe('test if login is 200 when login using correctUserCredentials', () => {
         expect(response.status).toEqual(200);
     })
 
+    it('check if set-cookie instruction exist', async () => {
+        //todo
+    })
 });
 
-
+//todo add test to check if login is 400 when login using incorrectUserCredentials

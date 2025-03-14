@@ -3,6 +3,7 @@ import {InferRequestType, InferResponseType} from "hono";
 import {client} from "@/lib/rpc";
 import {toast} from "sonner";
 
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 type ResponseType = InferResponseType<typeof client.api.projects["$post"],200>;
@@ -30,7 +31,7 @@ export const useCreateProject = () => {
         
         onSuccess: () => {
             toast.success("Project created");
-            queryClient.invalidateQueries({queryKey: ["projects"]});
+            queryClient.invalidateQueries({ queryKey: ["projects"]});
         },
         onError: () => {
             toast.error("Failed to create Project");
