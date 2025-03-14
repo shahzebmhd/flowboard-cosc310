@@ -12,15 +12,22 @@ import { useQueryState } from "nuqs";
 import { DataFilters } from "./data-filters";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useTaskFilters } from "../hooks/use-task-filters";
+import { columns } from "./columns"
+import { DataTable } from "@/components/data-table";
+
+import React from "react";
+
 
 export const TaskViewSwitcher = () => {
-    const { open } = useCreateTaskModal();
+    
     const [view, setView] = useQueryState("task-view", {
         defaultValue: "table",
     });
 
     const { status, assigneeId, projectId, dueDate } = useTaskFilters();
     const workspaceId = useWorkspaceId();
+    const { open } = useCreateTaskModal();
+
 
     const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
         workspaceId,
@@ -31,7 +38,8 @@ export const TaskViewSwitcher = () => {
     });
 
     return (
-        <Tabs className="flex-1 w-full border rounded-lg">
+        <Tabs defaultValue={view} onValueChange={setView}
+         className="flex-1 w-full border rounded-lg">
             <div className="h-full flex flex-col overflow-auto p-4">
                 <div className="flex flex-col gap-y-2 lg:flex-row justify-between items-center">
                     <TabsList className="w-full lg:w-auto">
@@ -62,15 +70,18 @@ export const TaskViewSwitcher = () => {
                 ) : (
                     <>
                         <TabsContent value="table" className="mt-0">
-                            {JSON.stringify(tasks)}
+                           <DataTable columns = {columns} data={tasks?.documents ?? []} />
                         </TabsContent>
+
                         <TabsContent value="kanban" className="mt-0">
                             {JSON.stringify(tasks)}
                         </TabsContent>
+
                         {/* NOT IMPLEMENTING */}
                         {/* <TabsContent value="calendar" className="mt-0">
                             {JSON.stringify(tasks)}
                         </TabsContent> */}
+                        
                     </>
                 )}
             </div>

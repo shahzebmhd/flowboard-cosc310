@@ -65,7 +65,7 @@ app.post(
             ID.unique(),
             {
                 name,
-                imageUrl: uploadedImageUrl,
+                ImageUrl: uploadedImageUrl,
                 workspaceId,
             }
         );
@@ -141,6 +141,7 @@ app.patch(
       if (!member) {
         return c.json({ error: "Unauthorized" }, 401);
       }
+      
       let uploadedImageUrl: string | undefined;
       if (image instanceof File) {
         const file = await storage.createFile(IMAGES_BUCKET_ID, ID.unique(), image);
@@ -152,7 +153,7 @@ app.patch(
       const project = await databases.updateDocument(
         DATABASE_ID, PROJECTS_ID, projectId, {
         name,
-        imageUrl: uploadedImageUrl,
+        ImageUrl: uploadedImageUrl,
       });
       return c.json({ data: project });
     }
