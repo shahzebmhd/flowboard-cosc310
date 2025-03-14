@@ -27,12 +27,10 @@ type TasksState = {
 
 interface DataKanbanProps {
     data: Task[];
-    onChange: (tasks: { $id: string; status: TaskStatus; position: number}[]) => void;
 };
 
 export const DataKanban = ({
     data,
-    onChange,
 }: DataKanbanProps) => {
     const [tasks, setTasks] = useState<TasksState>(() => {
         const initialTasks: TasksState = {
@@ -53,26 +51,6 @@ export const DataKanban = ({
         
         return initialTasks;
     });
-    
-    useEffect (() => {
-        const newTasks: TasksState = {
-            [TaskStatus.BACKLOG]: [],
-            [TaskStatus.TODO]: [],
-            [TaskStatus.IN_PROGRESS]: [],
-            [TaskStatus.IN_REVIEW]: [],
-            [TaskStatus.DONE]: [],
-        };
-
-        data.forEach((task) => {
-            newTasks[task.status].push(task);
-        });
-
-        Object.keys(newTasks).forEach((status) => {
-            newTasks[status as TaskStatus].sort((a, b) => a.position - b.position);
-        });
-
-        setTasks(newTasks);
-    }, [data]);
 
     const onDragEnd = useCallback(( result: DropResult ) => {
         if (!result.destination) return;
@@ -81,7 +59,7 @@ export const DataKanban = ({
         const sourceStatus = source.droppableId as TaskStatus;
         const destStatus = destination.droppableId as TaskStatus;
 
-        let updatesPayload: { $id: string; status: TaskStatus; position: number; }[] = [];
+        let updatesPayload: { $id: string; status: TaskStatus; position: number; }[]
 
         setTasks((prevTasks) => {
             const newTasks = { ...prevTasks };
@@ -89,7 +67,6 @@ export const DataKanban = ({
             // Safely remove the task from the source column
             const sourceColumn = [...newTasks[sourceStatus]];
             const [movedTask] = sourceColumn.splice(source.index, 1);
-
             // If there's no moved task (shouldn't happen but just in case), return the previous state
             if (!movedTask){
                 console.error("No task found at the source index")
@@ -151,9 +128,7 @@ export const DataKanban = ({
 
             return newTasks;
         })
-        
-        onChange(updatesPayload);
-    }, [onChange]);
+    }, []);
     
     return (
         <DragDropContext onDragEnd={() => {}}>

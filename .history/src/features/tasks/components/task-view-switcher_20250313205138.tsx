@@ -15,22 +15,17 @@ import { useGetTasks } from "../api/use-get-tasks";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import { DataKanban } from "./data-kanban";
-import { useBulkUpdateTask } from "../api/use-bulk-update-tasks";
 
 export const TaskViewSwitcher = () => {
     const { open } = useCreateTaskModal();
     const workspaceId = useWorkspaceId();
-    const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({ workspaceId });
-
-    const { mutate: bulkUpdate } = useBulkUpdateTask();
+    const { data: tasks, isLoading } = useGetTasks({ workspaceId });
 
     const onKanbanChange = useCallback((
         tasks: { $id: string; status: TaskStatus; position: number;}[]
     ) => {
-        bulkUpdate({
-            json: tasks,
-        })
-    }, [bulkUpdate]);
+        console.log({tasks})
+    }, []);
 
     return (
         <Tabs className="flex-1 w-full border rounded-lg">

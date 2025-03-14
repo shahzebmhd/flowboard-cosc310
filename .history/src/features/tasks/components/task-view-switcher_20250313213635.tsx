@@ -30,7 +30,7 @@ export const TaskViewSwitcher = () => {
         bulkUpdate({
             json: tasks,
         })
-    }, [bulkUpdate]);
+    }, []);
 
     return (
         <Tabs className="flex-1 w-full border rounded-lg">

@@ -22,7 +22,7 @@ export const CreateTaskFormWrapper = ({ onCancel }: CreateTaskFormWrapperProps) 
         name: project.name,
         imageUrl: project.imageUrl,
     }))
-    // @ts-expect-error member type is actually known
+    // @ts-expect-error
     const memberOptions = members?.documents.map((member) => ({ // TODO: uncomment after FB-3025 is merged
         id: member.$id,
         name: member.name,

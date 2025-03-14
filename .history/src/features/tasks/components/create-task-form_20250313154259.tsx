@@ -1,5 +1,3 @@
-/* All instances of Assignees and Due Dates have been removed for the time being
-will add back at a later date. */
 import { createTaskSchema } from "../schemas";
 import { useCreateTask } from "../api/use-create-tasks";
 import { DatePicker } from "@/components/date-picker";
@@ -32,7 +30,7 @@ interface CreateTaskFormProps {
     memberOptions: { id: string; name: string }[];
 }
 
-export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: CreateTaskFormProps) => {
+export const CreateTaskForm = ({ onCancel, projectOptions, /* memberOptions */ }: CreateTaskFormProps) => {
     const workspaceId = useWorkspaceId();
     const router = useRouter();
     const { mutate, isPending } = useCreateTask();

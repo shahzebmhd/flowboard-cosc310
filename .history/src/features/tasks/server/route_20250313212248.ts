@@ -167,18 +167,6 @@ app.post(
             return c.json({ error: "Unauthorized" }, 401);
         }
 
-        const updatedTasks = await Promise.all(
-            tasks.map(async (task) => {
-                const { $id, status, position } = task;
-                return databases.updateDocument<Task>(
-                    DATABASE_ID,
-                    TASKS_ID,
-                    $id,
-                    { status, position }
-                );
-            })
-        );
-
         const highestPositionTask = await databases.listDocuments(DATABASE_ID, TASKS_ID, [
             Query.equal("status", status),
             Query.equal("workspaceId", workspaceId),
@@ -201,7 +189,7 @@ app.post(
             position: newPosition,
         });
 
-        return c.json({ data:updatedTasks });
+        return c.json({ data: task });
     }
 );
 

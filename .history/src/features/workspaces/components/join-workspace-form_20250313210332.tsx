@@ -40,7 +40,6 @@ export const JoinWorkspaceForm = ({
                 router.push(`/workspaces/${data.id}`);
             },
         })
-    }
     return (
         <Card className="w-full h-full border-none shadow-none">
             <CardHeader className="p-7">
@@ -78,4 +77,5 @@ export const JoinWorkspaceForm = ({
             </CardContent>
         </Card>
     );
+};
 };

@@ -1,7 +1,6 @@
 // import { useGetMembers } from "@/features/members/api/use-get-members"; // TODO: uncomment after FB-3025 is merged
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
-import { useGetMembers } from "@/features/members/api/use-get-members";
 import { Loader } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { CreateTaskForm } from "./create-task-form";
@@ -22,7 +21,7 @@ export const CreateTaskFormWrapper = ({ onCancel }: CreateTaskFormWrapperProps) 
         name: project.name,
         imageUrl: project.imageUrl,
     }))
-    // @ts-expect-error member type is actually known
+    // @ts-expect-error
     const memberOptions = members?.documents.map((member) => ({ // TODO: uncomment after FB-3025 is merged
         id: member.$id,
         name: member.name,

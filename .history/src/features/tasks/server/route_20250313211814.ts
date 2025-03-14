@@ -143,19 +143,9 @@ app.post(
     async (c) => {
         const user = c.get("user");
         const databases = c.get("databases");
+        const { tasks } = await c.req.valid("json");
 
-        const { name, status, workspaceId, projectId, tasks, /*dueDate, assigneeId*/ } = c.req.valid("json");
-
-        const tasksToUpdate = await databases.listDocuments<Task>(
-            DATABASE_ID,
-            TASKS_ID,
-            [Query.contains("$id", tasks.map((task) => task.$id))]
-        );
-
-        const workspaceIds = new Set(tasksToUpdate.documents.map(task => task.workspaceId));
-        if (workspaceIds.size !== 1) {
-            return c.json({ error: "All tasks must belong to the same workspace" });
-        }
+        const { name, status, workspaceId, projectId, /*dueDate, assigneeId*/ } = c.req.valid("json");
 
         const member = await getMember({
             databases,
@@ -166,18 +156,6 @@ app.post(
         if (!member) {
             return c.json({ error: "Unauthorized" }, 401);
         }
-
-        const updatedTasks = await Promise.all(
-            tasks.map(async (task) => {
-                const { $id, status, position } = task;
-                return databases.updateDocument<Task>(
-                    DATABASE_ID,
-                    TASKS_ID,
-                    $id,
-                    { status, position }
-                );
-            })
-        );
 
         const highestPositionTask = await databases.listDocuments(DATABASE_ID, TASKS_ID, [
             Query.equal("status", status),
@@ -201,7 +179,7 @@ app.post(
             position: newPosition,
         });
 
-        return c.json({ data:updatedTasks });
+        return c.json({ data: task });
     }
 );
 

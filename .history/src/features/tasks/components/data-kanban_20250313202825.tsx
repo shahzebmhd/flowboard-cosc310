@@ -81,7 +81,7 @@ export const DataKanban = ({
         const sourceStatus = source.droppableId as TaskStatus;
         const destStatus = destination.droppableId as TaskStatus;
 
-        let updatesPayload: { $id: string; status: TaskStatus; position: number; }[] = [];
+        let updatesPayload: { $id: string; status: TaskStatus; position: number; }[]
 
         setTasks((prevTasks) => {
             const newTasks = { ...prevTasks };
@@ -151,7 +151,7 @@ export const DataKanban = ({
 
             return newTasks;
         })
-        
+        // @ts-expect-error
         onChange(updatesPayload);
     }, [onChange]);
     

@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Button } from "@/components/ui/button";
 import{
     Card,
@@ -15,7 +14,6 @@ import { useJoinWorkspace } from "../api/use-join-workspace";
 import { useInviteCode } from "../hooks/use-invite-code";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
 import { useRouter } from "next/navigation";
-
 
 interface JoinWorkspaceFormProps {
     initialValues: {
@@ -40,7 +38,6 @@ export const JoinWorkspaceForm = ({
                 router.push(`/workspaces/${data.id}`);
             },
         })
-    }
     return (
         <Card className="w-full h-full border-none shadow-none">
             <CardHeader className="p-7">
@@ -78,4 +75,5 @@ export const JoinWorkspaceForm = ({
             </CardContent>
         </Card>
     );
+};
 };

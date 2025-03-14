@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* All instances of Assignees and Due Dates have been removed for the time being
-will add back at a later date. */
 import { Hono } from "hono";
 import { getMember } from "@/features/members/utils";
 import { zValidator } from "@hono/zod-validator";
@@ -63,11 +60,13 @@ app.get(
             console.log("status:", status);
             query.push(Query.equal("status", status));
         }
+        // Add functionality back later
         /*  if(assigneeId) {
                 console.log("assigneeId:", assigneeId);
                 query.push(Query.equal("assigneeId:", assigneeId));
             }
         */
+        // Add functionality back later
         // if (dueDate) {
         //     console.log("dueDate:", dueDate);
         //     query.push(Query.equal("dueDate", dueDate));
@@ -81,6 +80,7 @@ app.get(
         const tasks = await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, query);
 
         const projectIds = tasks.documents.map((task) => task.projectId);
+        {/* Add functionality back later */}
         // const assigneeIds = tasks.documents.map((task) => task.assigneeId);
 
         const projects = await databases.listDocuments<Project>(
@@ -134,28 +134,14 @@ app.get(
 );
 
 app.post(
-    "/bulk-update",
+    "/",
     sessionMiddleware,
-    zValidator(
-        "json", 
-        createTaskSchema,
-    ),
+    zValidator("json", createTaskSchema),
     async (c) => {
         const user = c.get("user");
         const databases = c.get("databases");
 
-        const { name, status, workspaceId, projectId, tasks, /*dueDate, assigneeId*/ } = c.req.valid("json");
-
-        const tasksToUpdate = await databases.listDocuments<Task>(
-            DATABASE_ID,
-            TASKS_ID,
-            [Query.contains("$id", tasks.map((task) => task.$id))]
-        );
-
-        const workspaceIds = new Set(tasksToUpdate.documents.map(task => task.workspaceId));
-        if (workspaceIds.size !== 1) {
-            return c.json({ error: "All tasks must belong to the same workspace" });
-        }
+        const { name, status, workspaceId, projectId, /*dueDate, assigneeId*/ } = c.req.valid("json");
 
         const member = await getMember({
             databases,
@@ -166,18 +152,6 @@ app.post(
         if (!member) {
             return c.json({ error: "Unauthorized" }, 401);
         }
-
-        const updatedTasks = await Promise.all(
-            tasks.map(async (task) => {
-                const { $id, status, position } = task;
-                return databases.updateDocument<Task>(
-                    DATABASE_ID,
-                    TASKS_ID,
-                    $id,
-                    { status, position }
-                );
-            })
-        );
 
         const highestPositionTask = await databases.listDocuments(DATABASE_ID, TASKS_ID, [
             Query.equal("status", status),
@@ -201,7 +175,7 @@ app.post(
             position: newPosition,
         });
 
-        return c.json({ data:updatedTasks });
+        return c.json({ data: task });
     }
 );
 

@@ -1,7 +1,6 @@
 // import { useGetMembers } from "@/features/members/api/use-get-members"; // TODO: uncomment after FB-3025 is merged
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
-import { useGetMembers } from "@/features/members/api/use-get-members";
 import { Loader } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { CreateTaskForm } from "./create-task-form";
@@ -14,7 +13,7 @@ export const CreateTaskFormWrapper = ({ onCancel }: CreateTaskFormWrapperProps) 
     const workspaceId = useWorkspaceId();
 
     const { data: projects, isLoading: isLoadingProjects } = useGetProjects({ workspaceId });
-    const { data: members, isLoading: isLoadingMembers } = useGetMembers({ workspaceId }); // TODO: uncomment after FB-3025 is merged
+    // const { data: members, isLoading: isLoadingMembers } = useGetMembers({ workspaceId }); // TODO: uncomment after FB-3025 is merged
 
     // @ts-expect-error project type is actually known
     const projectOptions = projects?.documents.map((project) => ({
@@ -22,13 +21,16 @@ export const CreateTaskFormWrapper = ({ onCancel }: CreateTaskFormWrapperProps) 
         name: project.name,
         imageUrl: project.imageUrl,
     }))
-    // @ts-expect-error member type is actually known
-    const memberOptions = members?.documents.map((member) => ({ // TODO: uncomment after FB-3025 is merged
-        id: member.$id,
-        name: member.name,
-    }));
+    
+    {/* Add functionality back later */}
 
-    const isLoading = isLoadingProjects || isLoadingMembers; // TODO: will uncomment after FB-3025 merge
+    // const memberOptions = members?.documents.map((member) => ({ // TODO: uncomment after FB-3025 is merged
+    //     id: member.$id,
+    //     name: member.name,
+    // }));
+
+    // const isLoading = isLoadingProjects || isLoadingMembers; // TODO: will uncomment after FB-3025 merge
+    const isLoading = isLoadingProjects; // TODO: remove this after FB-3025, and replace with the line 29 code
 
     if (isLoading) {
         return (
@@ -44,7 +46,7 @@ export const CreateTaskFormWrapper = ({ onCancel }: CreateTaskFormWrapperProps) 
         <CreateTaskForm
             onCancel={onCancel}
             projectOptions={projectOptions ?? []}
-            memberOptions={memberOptions ?? []} // TODO: uncomment after FB-3025 is merged
+            // memberOptions={memberOptions ?? []} // TODO: uncomment after FB-3025 is merged
         />
     );
 };
