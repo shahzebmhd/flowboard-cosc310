@@ -7,7 +7,9 @@ const { loginAndGetSessionValue } = require("./getCookies");
 const client = wrapper(axios.create({
     httpsAgent: new (require('https').Agent)({
         rejectUnauthorized: false  // Disable certificate validation
-    })
+    }),
+    timeout:39000,
+
 }));
 
 describe('api after login test', () => {
