@@ -7,7 +7,8 @@ import * as dotenv from "dotenv";
 const client = wrapper(axios.create({
     httpsAgent: new (require('https').Agent)({
         rejectUnauthorized: false  // Disable certificate validation
-    })
+    }),    timeout:39000,
+
 }));
 
 dotenv.config({path: '../.env.local'});
