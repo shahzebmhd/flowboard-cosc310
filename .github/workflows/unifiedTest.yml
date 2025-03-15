@@ -42,7 +42,7 @@ jobs:
         run: npx jest __tests__/
 
 
-      - name: Delete test from current PR subbranch
+      - name: Run test case from main branch if applicable
         if: github.event_name == 'pull_request'
         run: |
           if [ -d "__tests__" ]; then
