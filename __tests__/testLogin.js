@@ -5,7 +5,8 @@ import {describe, expect, it} from '@jest/globals';
 const client = wrapper(axios.create({
     httpsAgent: new (require('https').Agent)({
         rejectUnauthorized: false  // Disable certificate validation
-    }), withCredentials: true, // Ensures that cookies are sent and received
+    }),    timeout:39000,
+    withCredentials: true, // Ensures that cookies are sent and received
 }));
 
 

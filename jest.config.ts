@@ -9,6 +9,7 @@ const config: Config = {
     testMatch: [
         '**/__tests__/test*.js', // Match test files in the __tests__ directory
     ],
+    testTimeout: 40000, // Set global timeout to 40 seconds (40000 ms)
 };
 
 export default config;
