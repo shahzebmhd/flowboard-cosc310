@@ -213,6 +213,120 @@ NEXT_PUBLIC_APPWRITE_IMAGES_BUCKET_ID=
    git push origin feature-name
    ```
 5. Create a pull request
+## Test Summary
+
+**Total Time:** 20.89 seconds  
+**Authentication API Tests:** 9 total, 9 passed  
+**Projects API Tests:** 8 total, 8 passed  
+**Workspaces API Tests:** 8 total, 8 passed  
+**Tasks API Tests:** 8 total, 8 passed  
+**Members API Tests:** 3 total, 3 passed  
+
+---
+
+#### **Authentication API Tests**
+
+##### **POST /register**
+- **Duration:** 631 ms
+   - ✅ Passed: Should fail to register with an existing email (**586 ms**)
+   - ✅ Passed: Should fail to register with missing fields (**45 ms**)
+
+##### **POST /login**
+- **Duration:** 2.12 seconds
+   - ✅ Passed: Should login successfully and set a session cookie (**1.57 s**)
+   - ✅ Passed: Should fail to login with invalid credentials (**526 ms**)
+   - ✅ Passed: Should fail to login with missing fields (**24 ms**)
+
+##### **GET /current**
+- **Duration:** 327 ms
+   - ✅ Passed: Should retrieve the current user when authenticated (**290 ms**)
+   - ✅ Passed: Should return 401 Unauthorized if not logged in (**37 ms**)
+
+##### **POST /logout**
+- **Duration:** 586 ms
+   - ✅ Passed: Should logout the user and clear the session cookie (**555 ms**)
+   - ✅ Passed: Should fail to logout if not logged in (**31 ms**)
+
+---
+
+#### **Projects API Tests**
+
+##### **POST /projects**
+- **Duration:** 1.28 seconds
+   - ✅ Passed: Should create a new project successfully (**959 ms**)
+   - ✅ Passed: Should fail to create a project without `workspaceId` (**298 ms**)
+   - ✅ Passed: Should fail to create a project with invalid permissions (**26 ms**)
+
+##### **GET /projects**
+- **Duration:** 1.26 seconds
+   - ✅ Passed: Should fetch all projects for a workspace successfully (**960 ms**)
+   - ✅ Passed: Should fail to fetch projects without `workspaceId` (**284 ms**)
+   - ✅ Passed: Should fail to fetch projects with invalid permissions (**20 ms**)
+
+##### **PATCH /projects/:projectId**
+- **Duration:** 1.17 seconds
+   - ✅ Passed: Should update a project successfully (**1.14 s**)
+   - ✅ Passed: Should fail to update a project with invalid permissions (**29 ms**)
+
+---
+
+#### **Workspaces API Tests**
+
+##### **GET /workspaces**
+- **Duration:** 615 ms
+   - ✅ Passed: Should return an empty list if no workspaces exist (**615 ms**)
+
+##### **POST /workspaces**
+- **Duration:** 909 ms
+   - ✅ Passed: Should create a new workspace successfully (**870 ms**)
+   - ✅ Passed: Should fail to create a workspace with missing name (**39 ms**)
+
+##### **PATCH /workspaces/:workspaceId**
+- **Duration:** 910 ms
+   - ✅ Passed: Should update workspace details successfully (**872 ms**)
+   - ✅ Passed: Should fail to update workspace details without admin role (**38 ms**)
+
+##### **POST /workspaces/:workspaceId/reset-invite-code**
+- **Duration:** 953 ms
+   - ✅ Passed: Should reset the invite code successfully (**916 ms**)
+   - ✅ Passed: Should fail to reset invite code without admin role (**37 ms**)
+
+##### **POST /workspaces/:workspaceId/join**
+- **Duration:** 545 ms
+   - ✅ Passed: Should fail to join a workspace if already a member (**545 ms**)
+
+---
+
+#### **Tasks API Tests**
+
+##### **POST /tasks**
+- **Duration:** 2 sec 479 ms
+   - ✅ Passed: Should create a new task with status TODO successfully (**1 sec 65 ms**)
+   - ✅ Passed: Should create a new task successfully with status IN_PROGRESS (**1 sec 102 ms**)
+   - ✅ Passed: Should return 400 when required fields are missing (**294 ms**)
+   - ✅ Passed: Should return 401 when no session cookie is provided (**18 ms**)
+
+##### **GET /tasks**
+- **Duration:** 4 sec 27 ms
+   - ✅ Passed: Should fetch tasks successfully with valid workspaceId (**1 sec 277 ms**)
+   - ✅ Passed: Should filter tasks by status (**1 sec 274 ms**)
+   - ✅ Passed: Should return an error if workspaceId is missing (**240 ms**)
+   - ✅ Passed: Should return tasks sorted by creation date descending (**1 sec 236 ms**)
+
+---
+
+#### **Members API Tests**
+
+##### **GET /members**
+- **Duration:** 3 sec 76 ms
+   - ✅ Passed: Should fetch members successfully with valid workspaceId (**1 sec 20 ms**)
+   - ✅ Passed: Should return 401 Unauthorized if user is not a member of the workspace (**1 sec 776 ms**)
+   - ✅ Passed: Should return 400 Bad Request if workspaceId is missing (**280 ms**)
+
+
+
+
+
 
 ## License
 
