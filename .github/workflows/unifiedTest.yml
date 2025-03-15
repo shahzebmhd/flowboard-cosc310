@@ -1,6 +1,9 @@
 name: Run Test When New PR using main test case
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -15,23 +18,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Delete test from current PR subbranch
-        run: |
-          if [ -d "__tests__" ]; then
-            rm -rf __tests__
-          fi
-
-      - name: Copy test cases from main
-        if: github.event_name == 'pull_request'
-        run: |
-          git fetch origin main
-          if git ls-tree origin/main -- __tests__; then
-            git checkout origin/main -- __tests__
-          else
-            echo "No __tests__ directory found in main branch."
-            exit 1
-          fi
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -44,7 +30,6 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
       - name: Install dependencies
         run: npm install
 
@@ -53,8 +38,23 @@ jobs:
           nohup npm run dev:https-test > server.log 2>&1 &
           sleep 15 # Wait for the server to start (adjust the time as needed)
 
-      - name: Run Jest test
+      - name: Run Jest test using current branch test case
         run: npx jest __tests__/
+
+
+      - name: Delete test from current PR subbranch
+        if: github.event_name == 'pull_request'
+        run: |
+          if [ -d "__tests__" ]; then
+            rm -rf __tests__
+            git fetch origin main
+            if git ls-tree origin/main -- __tests__; then
+              git checkout origin/main -- __tests__
+              npx jest __tests__/
+            else
+              echo "No __tests__ directory found in main branch."
+            fi
+          fi
 
       - name: Stop server
         if: always()
