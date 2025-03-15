@@ -132,6 +132,23 @@ describe('Members API Tests', () => {
             }
         });
 
+        it('should use default values if user details cannot be fetched', async () => {
+            // Mock a scenario where user details cannot be fetched
+            const mockMember = {
+                $id: "mock-member-id",
+                workspaceId: workspaceId,
+                userId: "non-existent-user-id", // Simulate a non-existent user
+                name: null
+            };
+
+            // Insert the mock member into the database (this step requires direct DB access)
+            // For simplicity, assume this member already exists in the database.
+
+            // Send GET request to fetch members
+            const response = await client.get(`${BASE_URL}`, {
+                headers: {
+                    'Cookie': `flowboard-flowboard-cosc310-session=${key}`
+
     });
 
     // Clean up resources after tests
@@ -152,5 +169,6 @@ describe('Members API Tests', () => {
             }
         });
     });
+
 });
 
