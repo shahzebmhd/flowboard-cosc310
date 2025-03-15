@@ -1,4 +1,4 @@
-name: Run Test When New PR using main test case
+name: Run Test When New PR or push to main
 
 on:
   push:
