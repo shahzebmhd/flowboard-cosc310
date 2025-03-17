@@ -14,8 +14,11 @@ export function generateInviteCode(length: number) {
     return result;
 }
 
-export function snakeCaseToTitleCase(str: string) {
-    return str.toLowerCase()
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, (char) => char.toUpperCase())
-};
+// function will correctly convert strings like "task_status_pending" to "Task Status Pending"
+export function snakeCaseToTitleCase(str: string): string {
+    return str
+      .toLowerCase()
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+  

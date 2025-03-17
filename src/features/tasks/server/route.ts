@@ -32,6 +32,7 @@ app.get(
             status: z.nativeEnum(TaskStatus).nullish(),
             search: z.string().nullish(),
             // dueDate: z.string().nullish(),
+            // assigneeId: z.string().nullish(),
         })
     ),
     async (c) => {
@@ -81,6 +82,10 @@ app.get(
         //     console.log("dueDate:", dueDate);
         //     query.push(Query.equal("dueDate", dueDate));
         // }
+//         if (assigneeId) {
+//             console.log("assigneeId:", assigneeId);
+//             query.push(Query.equal("assigneeId", assigneeId));
+//         }
 
         if (search) {
             console.log("search:", search);
@@ -98,7 +103,7 @@ app.get(
             projectIds.length > 0 ? [Query.contains("$id", projectIds)] : []
         );
 
-        /*const members = await databases.listDocuments(
+        /* const members = await databases.listDocuments(
             DATABASE_ID,
             MEMBERS_ID,
             assigneeIds.length > 0 ? [Query.contains("$id", assigneeIds)] : []
@@ -122,14 +127,16 @@ app.get(
                     };
                 }
             })
-        );*/
+        ); */
 
         const populatedTasks = tasks.documents.map((task) => {
             const project = projects.documents.find((proj) => proj.$id === task.projectId);
+            const assignee = assignees.find((asg) => asg.$id === task.assigneeId);
 
             return {
                 ...task,
                 project,
+                // assignee,
             };
         });
 
@@ -207,6 +214,7 @@ app.post(
             projectId,
             // dueDate,
             // assigneeId
+
             position: newPosition,
         });
 

@@ -12,9 +12,9 @@ const ErrorPage = () => {
                 something went wrong
             </p>
             <Button variant="secondary" size="sm">
-                <Link href="/">
-                Back to home
-                </Link>
+               <Link href="/">
+               Back to home
+               </Link>
             </Button>
         </div>
     );

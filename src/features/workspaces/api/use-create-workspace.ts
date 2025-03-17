@@ -21,6 +21,9 @@ export const useCreateWorkspace = () => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
             const response = await client.api.workspaces["$post"]({form});
+            if (!response.ok) {
+                throw new Error("failed to create Workspace");
+            }
             return await response.json();
         },
         onSuccess: () => {

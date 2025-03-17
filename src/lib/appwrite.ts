@@ -29,7 +29,8 @@ export async function createSessionClient(){
         },
         get databases() {
             return new Databases(client);
-        }
+        },
+
     };
 };
 

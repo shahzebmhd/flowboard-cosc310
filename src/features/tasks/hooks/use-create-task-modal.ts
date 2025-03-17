@@ -10,9 +10,9 @@ export const useCreateTaskModal = () => {
     const close = () => setIsOpen(false);
 
     return {
-        isOpen,
-        open,
-        close,
-        setIsOpen,
+        isOpen, 
+        open, 
+        close, 
+        setIsOpen
     };
 };

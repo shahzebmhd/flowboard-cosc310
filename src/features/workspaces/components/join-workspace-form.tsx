@@ -21,7 +21,6 @@ interface JoinWorkspaceFormProps {
     initialValues: {
         name: string
     };
-};
 
 export const JoinWorkspaceForm = ({
     initialValues,
