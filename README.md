@@ -54,6 +54,15 @@ flowboard/
 ├── .next/                # Next.js build output
 ├── node_modules/         # Dependencies
 ├── __tests__/            # Jest test files
+│   ├── testAuth.js       # Authentication tests
+│   ├── testLogin.js      # Login functionality tests
+│   ├── testProjects.js   # Projects API tests
+│   ├── testTask.js       # Tasks API tests
+│   ├── testWorkspaces.js # Workspaces API tests
+│   ├── testMember.js     # Members API tests
+│   ├── testSecuredApiAfterLogin.js # Security tests
+│   ├── testMustPass.js   # Basic sanity tests
+│   └── getCookies.js     # Cookie handling utilities
 ├── .env.local            # Environment variables
 ├── Dockerfile            # Docker configuration
 ├── docker-compose.yml    # Docker Compose configuration
@@ -251,6 +260,20 @@ The project uses Jest for testing. Run the tests with:
 ```bash
 npm test
 ```
+
+### Test Structure
+
+The tests are organized in the `__tests__` directory:
+
+- **testAuth.js**: Tests for user registration and authentication endpoints
+- **testLogin.js**: Tests for login functionality and session management
+- **testProjects.js**: Tests for project creation, retrieval, and updates
+- **testTask.js**: Tests for task management operations
+- **testWorkspaces.js**: Tests for workspace management
+- **testMember.js**: Tests for member management and permissions
+- **testSecuredApiAfterLogin.js**: Tests for API security after authentication
+- **testMustPass.js**: Basic sanity tests that must pass for the application to function
+- **getCookies.js**: Utility functions for cookie handling in tests
 
 ### Test Summary
 
