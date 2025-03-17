@@ -1,4 +1,5 @@
 import {Hono} from "hono";
+import {z} from "zod";
 import {zValidator} from "@hono/zod-validator";
 import {createWorkspaceSchema, updateWorkspaceSchema} from "@/features/workspaces/schemas";
 import {sessionMiddleware} from "@/lib/session-middleware";
@@ -7,7 +8,7 @@ import {ID, Query} from "node-appwrite";
 import {MemberRole} from "@/features/members/type";
 import {generateInviteCode} from "@/lib/utils";
 import { getMember } from "@/features/members/utils";
-import { NextResponse } from "next/server";
+import { Workspace } from "../types";
 
 const app = new Hono()
     .get("/", sessionMiddleware, async (c) => {
@@ -90,6 +91,7 @@ const app = new Hono()
                     userId: user.$id,
                     workspaceId: workspace.$id,
                     role: MemberRole.ADMIN,
+                    name: user.name,
                 },
             )
 
@@ -143,7 +145,5 @@ app.get(
         return c.json({data: user});
     }
 );
-
-
 
 export default app;

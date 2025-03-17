@@ -26,6 +26,7 @@ app.get(
             status: z.nativeEnum(TaskStatus).nullish(),
             search: z.string().nullish(),
             // dueDate: z.string().nullish(),
+            // assigneeId: z.string().nullish(),
         })
     ),
     async (c) => {
@@ -34,6 +35,7 @@ app.get(
         const user = c.get("user");
 
         const { workspaceId, projectId, status, search, /*dueDate*/ } = c.req.valid("query");
+        const { workspaceId, projectId, status, search, /*assigneeId, dueDate*/ } = c.req.valid("query");
 
         const member = await getMember({
             databases,
@@ -64,6 +66,10 @@ app.get(
         //     console.log("dueDate:", dueDate);
         //     query.push(Query.equal("dueDate", dueDate));
         // }
+//         if (assigneeId) {
+//             console.log("assigneeId:", assigneeId);
+//             query.push(Query.equal("assigneeId", assigneeId));
+//         }
 
         if (search) {
             console.log("search:", search);
@@ -81,12 +87,40 @@ app.get(
             projectIds.length > 0 ? [Query.contains("$id", projectIds)] : []
         );
 
+        /* const members = await databases.listDocuments(
+            DATABASE_ID,
+            MEMBERS_ID,
+            assigneeIds.length > 0 ? [Query.contains("$id", assigneeIds)] : []
+        );
+
+        const assignees = await Promise.all(
+            members.documents.map(async (member) => {
+                try {
+                    const user = await users.get(member.userId);
+                    return {
+                        ...member,
+                        name: user.name,
+                        email: user.email,
+                    };
+                } catch (error) {
+                    // If we can't get user data, use the member's name or a fallback
+                    return {
+                        ...member,
+                        name: member.name || `User ${member.userId.substring(0, 8)}`,
+                        email: "unknown@example.com",
+                    };
+                }
+            })
+        ); */
+
         const populatedTasks = tasks.documents.map((task) => {
             const project = projects.documents.find((proj) => proj.$id === task.projectId);
+            const assignee = assignees.find((asg) => asg.$id === task.assigneeId);
 
             return {
                 ...task,
                 project,
+                // assignee,
             };
         });
 
@@ -107,7 +141,7 @@ app.post(
         const user = c.get("user");
         const databases = c.get("databases");
 
-        const { name, status, workspaceId, projectId, /*dueDate,*/ } = c.req.valid("json");
+        const { name, status, workspaceId, projectId, /*dueDate, assigneeId*/ } = c.req.valid("json");
 
         const member = await getMember({
             databases,
@@ -137,6 +171,7 @@ app.post(
             workspaceId,
             projectId,
             // dueDate,
+            // assigneeId,
             position: newPosition,
         });
 

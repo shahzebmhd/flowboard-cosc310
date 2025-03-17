@@ -27,7 +27,7 @@ import { useRef } from "react";
 interface CreateTaskFormProps {
     onCancel?: () => void;
     projectOptions: { id: string; name: string; imageUrl: string }[];
-    memberOptions?: { id: string; name: string }[]; // UPDATE: After FB-3025 Merge, REMOVE ? 
+    memberOptions: { id: string; name: string }[];
 }
 
 export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: CreateTaskFormProps) => {
@@ -83,8 +83,6 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                     </FormItem>
                                 )}
                             />
-                            {/* Maybe add this back as a bonus feature? */}
-                            {/* Due Date Field
                             <FormField
                                 control={form.control}
                                 name="dueDate"
@@ -94,6 +92,35 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                         <FormControl>
                                             <DatePicker {...field} />
                                         </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            {/* Assignee Field 
+                            <FormField
+                                control={form.control}
+                                name="assigneeId"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Assignee</FormLabel>
+                                        <Select defaultValue={field.value} onValueChange={field.onChange}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select assignee" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {memberOptions.map((member) => (
+                                                    <SelectItem key={member.id} value={member.id}>
+                                                        <div className="flex items-center gap-x-2">
+                                                            <MemberAvatar className="size-6" name={member.name} />
+                                                            {member.name}
+                                                        </div>
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -160,8 +187,6 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                         </div>
 
                         <DottedSeparator className="py-7" />
-
-                                
                         <div className="flex items-center justify-between">
                             <Button
                                 type="button"
