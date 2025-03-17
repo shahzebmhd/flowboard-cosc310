@@ -1,7 +1,9 @@
+/* All instances of Assignees and Due Dates have been removed for the time being
+will add back at a later date. */
 import { createTaskSchema } from "../schemas";
 import { useCreateTask } from "../api/use-create-tasks";
-// import { DatePicker } from "@/components/date-picker"; // Unnecessary functionality
-// import { MemberAvatar } from "@/features/members/components/member-avatar"; // UPDATE: uncomment after FB-3025 merge
+import { DatePicker } from "@/components/date-picker";
+import { MemberAvatar } from "@/features/members/components/member-avatar"; // TODO: FB-3025
 import { TaskStatus } from "../types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import {
@@ -41,7 +43,6 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
     });
 
     const onSubmit = (values: z.infer<typeof createTaskSchema>) => {
-        console.log("Form submitted with values:", values);
         mutate(
             { json: { ...values, workspaceId } },
             {
@@ -65,9 +66,7 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
 
             <CardContent className="p-7">
                 <FormProvider {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit, (errors) => {
-                        console.log("Validation Errors:", errors);
-                    })}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
                         <div className="flex flex-col gap-y-4">
                             {/* Task Name Field */}
                             <FormField
@@ -83,6 +82,9 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                     </FormItem>
                                 )}
                             />
+                            {/* Add functionality back later */}
+                            {/* Due Date Field
+
                             <FormField
                                 control={form.control}
                                 name="dueDate"
@@ -97,6 +99,35 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                 )}
                             />
 
+                            {/* Assignee Field 
+                            <FormField
+                                control={form.control}
+                                name="assigneeId"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Assignee</FormLabel>
+                                        <Select defaultValue={field.value} onValueChange={field.onChange}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select assignee" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {memberOptions.map((member) => (
+                                                    <SelectItem key={member.id} value={member.id}>
+                                                        <div className="flex items-center gap-x-2">
+                                                            <MemberAvatar className="size-6" name={member.name} />
+                                                            {member.name}
+                                                        </div>
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            /> */}
+                            {/* Add functionality back later */}
                             {/* Assignee Field 
                             <FormField
                                 control={form.control}
@@ -199,9 +230,9 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                 Cancel
                             </Button>
                             <Button 
-                                disabled={isPending}
+                                disabled={isPending} 
                                 type="submit" 
-                                size="lg" 
+                                size="lg"
                             >
                                 Create Task
                             </Button>

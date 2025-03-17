@@ -1,22 +1,24 @@
-// @ts-nocheck // TODO: To fix the lint errors
-
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useCallback } from "react";
+import { Loader, PlusIcon } from "lucide-react";
+import { useQueryState } from "nuqs";
+
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+
 import { Button } from "@/components/ui/button";
 import { DottedSeparator } from "@/components/ui/dotted-separator";
-import { PlusIcon, Loader } from "lucide-react";
-import { useCreateTaskModal } from "../hooks/use-create-task-modal";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { TaskStatus } from "../types";
 import { useGetTasks } from "../api/use-get-tasks";
-import { useQueryState } from "nuqs";
-import { DataFilters } from "./data-filters";
-import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useTaskFilters } from "../hooks/use-task-filters";
-import { columns } from "./columns"
-import { DataTable } from "@/components/data-table";
+import { useUpdateTask } from "../api/use-update-tasks";
+import { useBulkUpdateTask } from "../api/use-bulk-update-tasks";
+import { DataKanban } from "./data-kanban";
+import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 
 import React from "react";
-
 
 export const TaskViewSwitcher = () => {
     
@@ -26,16 +28,25 @@ export const TaskViewSwitcher = () => {
 
     const { status, assigneeId, projectId, dueDate } = useTaskFilters();
     const workspaceId = useWorkspaceId();
-    const { open } = useCreateTaskModal();
+    const { data: tasks, } = useGetTasks({ workspaceId });
 
+    const { mutate: bulkUpdate } = useBulkUpdateTask();
+    const { mutate: updateTask } = useUpdateTask();
 
-    const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
-        workspaceId,
-        projectId,
-        assigneeId,
-        status,
-        dueDate,
-    });
+    const onKanbanChange = useCallback((
+        tasks: { 
+            $id: string;
+            status: TaskStatus;
+            position: number;
+        }[]
+    ) => {
+        updateTask({
+            json: tasks,
+        })
+        bulkUpdate({
+            json: tasks,
+        })
+    }, [updateTask, bulkUpdate]);
 
     return (
         <Tabs defaultValue={view} onValueChange={setView}
@@ -73,9 +84,9 @@ export const TaskViewSwitcher = () => {
                            <DataTable columns = {columns} data={tasks?.documents ?? []} />
                         </TabsContent>
 
-                        <TabsContent value="kanban" className="mt-0">
-                            {JSON.stringify(tasks)}
-                        </TabsContent>
+                    <TabsContent value="kanban" className="mt-0">
+                        <DataKanban onchange={onKanbanChange} data={tasks?.documents ?? []} />
+                    </TabsContent>
 
                         {/* NOT IMPLEMENTING */}
                         {/* <TabsContent value="calendar" className="mt-0">
