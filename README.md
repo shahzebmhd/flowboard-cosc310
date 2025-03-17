@@ -213,7 +213,11 @@ The application uses Hono.js for API routes:
    
 For HTTPS development:
 ```bash
-npm run dev:https
+npx next dev --experimental-https
+
+if localhost:3000 servers are running elsewhere, ensure to restart by following the below approach
+lsof -i :3000 -i :3001 -i :3002 -i :3003 -i :3004
+kill -9 <>
 ```
 
 ## Environment Variables
