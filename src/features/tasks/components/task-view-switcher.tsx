@@ -71,7 +71,7 @@ export const TaskViewSwitcher = () => {
                     </Button>
                 </div>
                 <DottedSeparator className="my-4" />
-                <DataFilters />
+{/*                 <DataFilters /> */}
                 <DottedSeparator className="my-4" />
 
                 {isLoadingTasks ? (
