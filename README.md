@@ -1,6 +1,6 @@
 # Flowboard
 
-A modern project management application built with Next.js, Appwrite, and Tailwind CSS.
+A modern project management application built with Next.js 14, Appwrite, and Tailwind CSS.
 
 ## Team
 
@@ -9,7 +9,7 @@ A modern project management application built with Next.js, Appwrite, and Tailwi
 - **Jessica**
 - **Mark**
 
-### DevOps and Testings
+### DevOps and Testing
 - **Q**
 - **Germain**
 
@@ -20,8 +20,12 @@ A modern project management application built with Next.js, Appwrite, and Tailwi
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
+- [Docker Setup](#docker-setup)
 - [API Routes](#api-routes)
+- [Testing](#testing)
 - [Contributing](#contributing)
+- [Acknowledgements & Inspirations](#acknowledgements--inspirations)
+- [License](#license)
 
 ## Overview
 
@@ -32,9 +36,11 @@ Flowboard is a collaborative project management tool that allows teams to organi
 - **Authentication**: User registration, login, and session management
 - **Workspaces**: Create and manage team workspaces
 - **Projects**: Organize work into projects within workspaces
-- **Tasks**: Create, assign, and track tasks with different statuses
-- **Members**: Manage workspace members with different roles
+- **Tasks**: Create, assign, and track tasks with different statuses (BACKLOG, TODO, IN_PROGRESS, IN_REVIEW, DONE)
+- **Members**: Manage workspace members with different roles (ADMIN, MEMBER)
+- **Drag and Drop**: Intuitive task management with drag and drop interface
 - **Real-time Updates**: Stay in sync with your team's progress
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
 
 ## Project Structure
 
@@ -47,7 +53,19 @@ flowboard/
 ├── certificates/         # SSL certificates for development
 ├── .next/                # Next.js build output
 ├── node_modules/         # Dependencies
+├── __tests__/            # Jest test files
+│   ├── testAuth.js       # Authentication tests
+│   ├── testLogin.js      # Login functionality tests
+│   ├── testProjects.js   # Projects API tests
+│   ├── testTask.js       # Tasks API tests
+│   ├── testWorkspaces.js # Workspaces API tests
+│   ├── testMember.js     # Members API tests
+│   ├── testSecuredApiAfterLogin.js # Security tests
+│   ├── testMustPass.js   # Basic sanity tests
+│   └── getCookies.js     # Cookie handling utilities
 ├── .env.local            # Environment variables
+├── Dockerfile            # Docker configuration
+├── docker-compose.yml    # Docker Compose configuration
 ├── package.json          # Project metadata and dependencies
 ├── tsconfig.json         # TypeScript configuration
 └── tailwind.config.ts    # Tailwind CSS configuration
@@ -76,6 +94,7 @@ src/
 ├── lib/                  # Utility functions and libraries
 │   ├── appwrite.ts       # Appwrite client setup
 │   ├── session-middleware.ts # Session handling
+│   ├── rpc.ts            # RPC utilities
 │   └── utils.ts          # General utilities
 └── config.ts             # Application configuration
 ```
@@ -88,6 +107,7 @@ src/
 - **Server**: Authentication API routes
 - **Schemas**: Validation schemas for auth forms
 - **Constants**: Authentication-related constants
+- **API**: Client-side API hooks for authentication
 
 #### Workspaces (`src/features/workspaces/`)
 
@@ -111,7 +131,7 @@ src/
 
 - **Components**: Task creation, listing, and management UI
 - **Server**: Task API routes
-- **Types**: Task data models and enums
+- **Types**: Task data models and enums (BACKLOG, TODO, IN_PROGRESS, IN_REVIEW, DONE)
 - **Schemas**: Validation schemas for task forms
 - **API**: Client-side API hooks for tasks
 - **Hooks**: Custom hooks for task functionality
@@ -120,8 +140,9 @@ src/
 
 - **Components**: Member management UI
 - **Server**: Member API routes
-- **Types**: Member roles and data models
+- **Types**: Member roles (ADMIN, MEMBER) and data models
 - **Utils**: Utility functions for member operations
+- **API**: Client-side API hooks for members
 
 ### Components Breakdown
 
@@ -141,6 +162,9 @@ Basic UI components built with Tailwind CSS and Radix UI:
 - **Badge**: Status badge component
 - **Calendar**: Date picker calendar
 - **Checkbox**: Checkbox input component
+- **Chart**: Data visualization component
+- **Drawer**: Slide-out drawer component
+- **Skeleton**: Loading skeleton component
 - **And more...**
 
 #### Higher-level Components (`src/components/`)
@@ -152,25 +176,35 @@ Basic UI components built with Tailwind CSS and Radix UI:
 - **Date-Picker**: Date selection component
 - **Mobile-Sidebar**: Mobile-responsive sidebar
 - **Query-Provider**: React Query provider setup
+- **Task-Description**: Task detail component
+- **Data-Table**: Reusable data table component
+- **Responsive-Modal**: Responsive modal dialog
 
 ### API Routes
 
 The application uses Hono.js for API routes:
 
-- **/api/auth**: Authentication endpoints
-- **/api/workspaces**: Workspace management
-- **/api/projects**: Project management
-- **/api/tasks**: Task management
-- **/api/members**: Member management
+- **/api/auth**: Authentication endpoints (login, register, logout, current)
+- **/api/workspaces**: Workspace management (create, list, update, join)
+- **/api/projects**: Project management (create, list, update)
+- **/api/tasks**: Task management (create, list, update, filter)
+- **/api/members**: Member management (list, update roles)
 
 ## Getting Started
 
 1. Clone the repository
+   ```bash
+   git clone https://github.com/yourusername/flowboard.git
+   cd flowboard
+   ```
+
 2. Install dependencies:
    ```bash
    npm install
    ```
+
 3. Set up environment variables (see below)
+
 4. Run the development server:
    ```bash
    npm run dev
@@ -178,7 +212,7 @@ The application uses Hono.js for API routes:
    
 For HTTPS development:
 ```bash
-npx next dev --experimental-https
+npm run dev:https
 ```
 
 ## Environment Variables
@@ -197,23 +231,51 @@ NEXT_PUBLIC_APPWRITE_TASKS_ID=
 NEXT_PUBLIC_APPWRITE_IMAGES_BUCKET_ID=
 ```
 
-## Contributing
+## Docker Setup
 
-1. Create a feature branch:
+The project includes Docker configuration for easy deployment and development.
+
+### Running with Docker Compose
+
+1. Make sure you have Docker and Docker Compose installed
+
+2. Build and start the containers:
    ```bash
-   git checkout -b feature-name
+   docker-compose up -d
    ```
-2. Make your changes
-3. Commit your changes:
-   ```bash
-   git commit -m "Description of changes"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature-name
-   ```
-5. Create a pull request
-## Test Summary
+
+3. Access the application at `https://localhost:3000`
+
+### Docker Configuration
+
+The Docker setup includes:
+- Next.js application container
+- Ngrok service for exposing the application to the internet (useful for testing webhooks)
+- Shared network for communication between services
+
+## Testing
+
+The project uses Jest for testing. Run the tests with:
+
+```bash
+npm test
+```
+
+### Test Structure
+
+The tests are organized in the `__tests__` directory:
+
+- **testAuth.js**: Tests for user registration and authentication endpoints
+- **testLogin.js**: Tests for login functionality and session management
+- **testProjects.js**: Tests for project creation, retrieval, and updates
+- **testTask.js**: Tests for task management operations
+- **testWorkspaces.js**: Tests for workspace management
+- **testMember.js**: Tests for member management and permissions
+- **testSecuredApiAfterLogin.js**: Tests for API security after authentication
+- **testMustPass.js**: Basic sanity tests that must pass for the application to function
+- **getCookies.js**: Utility functions for cookie handling in tests
+
+### Test Summary
 
 **Total Time:** 20.89 seconds  
 **Authentication API Tests:** 9 total, 9 passed  
@@ -323,10 +385,44 @@ NEXT_PUBLIC_APPWRITE_IMAGES_BUCKET_ID=
    - ✅ Passed: Should return 401 Unauthorized if user is not a member of the workspace (**1 sec 776 ms**)
    - ✅ Passed: Should return 400 Bad Request if workspaceId is missing (**280 ms**)
 
+## Contributing
 
+1. Create a feature branch using the naming convention `FB-XXXX` (where XXXX is the feature number):
+   ```bash
+   git checkout -b FB-1234-feature-name
+   ```
+2. Make your changes
+3. Commit your changes:
+   ```bash
+   git commit -m "FB-1234: Description of changes"
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin FB-1234-feature-name
+   ```
+5. Create a pull request
 
+## Acknowledgements & Inspirations
 
+This project was made possible thanks to the following technologies, resources, and inspirations:
 
+### Technologies
+- [Next.js](https://nextjs.org/) - React framework for building the application
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [shadcn/ui](https://ui.shadcn.com/) - Beautifully designed components built with Radix UI and Tailwind CSS
+- [Appwrite](https://appwrite.io/) - Backend as a Service platform
+- [Hono.js](https://hono.dev/) - Lightweight API framework
+- [React Query](https://tanstack.com/query/latest) - Data fetching and state management
+- [Zod](https://zod.dev/) - TypeScript-first schema validation
+
+### Learning Resources
+- [FreeCodeCamp](https://www.freecodecamp.org/) - Tutorials and learning materials
+- [Traversy Media](https://traversymedia.com/) - Jest testing tutorials
+- [Next.js Documentation](https://nextjs.org/docs) - Official Next.js guides
+- [Appwrite Documentation](https://appwrite.io/docs) - Official Appwrite guides
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - Official Tailwind CSS guides
+- [Trello](https://trello.com/) - Kanban board interface
+- [GitHub Projects](https://github.com/features/issues) - Issue tracking and project management
 
 ## License
 
