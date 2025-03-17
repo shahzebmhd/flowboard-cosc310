@@ -45,10 +45,11 @@ export async function createAdminClient() {
             return new Account (client);
     
         },
-
+        get databases() {
+            return new Databases(client);
+        },
         get users() {
             return new Users(client);
-        }
-        //TODO: missing users, perhaps from FB-3025, for time being added users
+        },
     };
-}
+};

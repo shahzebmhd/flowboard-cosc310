@@ -1,4 +1,4 @@
-import { useGetMembers } from "@/features/members/api/use-get-members"; // TODO: uncomment after FB-3025 is merged
+// import { useGetMembers } from "@/features/members/api/use-get-members"; // TODO: uncomment after FB-3025 is merged
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { Loader } from "lucide-react";
@@ -13,21 +13,22 @@ export const CreateTaskFormWrapper = ({ onCancel }: CreateTaskFormWrapperProps) 
     const workspaceId = useWorkspaceId();
 
     const { data: projects, isLoading: isLoadingProjects } = useGetProjects({ workspaceId });
-    const { data: members, isLoading: isLoadingMembers } = useGetMembers({ workspaceId }); // TODO: uncomment after FB-3025 is merged
+    // const { data: members, isLoading: isLoadingMembers } = useGetMembers({ workspaceId }); // TODO: uncomment after FB-3025 is merged
 
-    const projectOptions = projects?.documents.map((project: { $id: any; name: any; ImageUrl: any; }) => ({ // TODO: double check if infering type here makes any difference
+    // @ts-expect-error project type is actually known
+    const projectOptions = projects?.documents.map((project) => ({
         id: project.$id,
         name: project.name,
-        imageUrl: project.ImageUrl,
+        imageUrl: project.imageUrl,
     }));
 
-    const memberOptions = members?.documents.map((member: { $id: any; name: any; }) => ({ // TODO: uncomment after FB-3025 is merged
-        id: member.$id,
-        name: member.name,
-    }));
+    // const memberOptions = members?.documents.map((member) => ({ // TODO: uncomment after FB-3025 is merged
+    //     id: member.$id,
+    //     name: member.name,
+    // }));
 
-    const isLoading = isLoadingProjects || isLoadingMembers; // TODO: will uncomment after FB-3025 merge
-    // const isLoading = isLoadingProjects; // TODO: remove this after FB-3025, and replace with the line 29 code
+    // const isLoading = isLoadingProjects || isLoadingMembers; // TODO: will uncomment after FB-3025 merge
+    const isLoading = isLoadingProjects; // TODO: remove this after FB-3025, and replace with the line 29 code
 
     if (isLoading) {
         return (
@@ -43,7 +44,7 @@ export const CreateTaskFormWrapper = ({ onCancel }: CreateTaskFormWrapperProps) 
         <CreateTaskForm
             onCancel={onCancel}
             projectOptions={projectOptions ?? []}
-            memberOptions={memberOptions ?? []} // TODO: uncomment after FB-3025 is merged
+            // memberOptions={memberOptions ?? []} // TODO: uncomment after FB-3025 is merged
         />
     );
 };

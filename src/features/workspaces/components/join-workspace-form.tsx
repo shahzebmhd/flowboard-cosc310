@@ -16,10 +16,9 @@ import { useWorkspaceId } from "../hooks/use-workspace-id";
 import { useRouter } from "next/navigation";
 
 interface JoinWorkspaceFormProps {
-   initialValues: {
-       name: string;
-   };
-};
+    initialValues: {
+        name: string;
+    };
 
 export const JoinWorkspaceForm = ({
     initialValues,
@@ -50,30 +49,31 @@ export const JoinWorkspaceForm = ({
                 <DottedSeparator />
             </div>
             <CardContent className="p-7">
-             <div className="flex flex-col lg:flex-row gap-2 items-center justify-between">
+                <div className="flex flex-col lg:flex-row gap-2 items-center justify-between">
                 <Button 
-                variant="secondary"
-                type="button"
-                asChild
-                size="lg"
-                className="w-full lg:w-fit"
-                disabled={isPending}>
+                    variant="secondary"
+                    type="button"
+                    asChild
+                    size="lg"
+                    className="w-full lg:w-fit"
+                    disabled={isPending}>
                     <Link href="/">
                     Cancel
-                        </Link>
-                    
+                    </Link>
+                
                 </Button>
                 <Button 
-                size="lg"
-                className="w-full lg:w-fit"
-                type="button"
-                onClick={onSubmit}
-                disabled={isPending}>
-                    Join Workspace
+                    size="lg"
+                    className="w-full lg:w-fit"
+                    type="button"
+                    onClick={onSubmit}
+                    disabled={isPending}>
+                        Join Workspace
                 </Button>
-            </div>
+                </div>
             </CardContent>
         </Card>
-    )
-}
-}
+    );
+};
+};
+

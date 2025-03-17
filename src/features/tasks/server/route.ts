@@ -23,10 +23,10 @@ app.get(
         z.object({
             workspaceId: z.string(),
             projectId: z.string().nullish(),
-            assigneeId: z.string().nullish(),
             status: z.nativeEnum(TaskStatus).nullish(),
             search: z.string().nullish(),
-            dueDate: z.string().nullish(),
+            // dueDate: z.string().nullish(),
+            // assigneeId: z.string().nullish(),
         })
     ),
     async (c) => {
@@ -34,7 +34,8 @@ app.get(
         const databases = c.get("databases");
         const user = c.get("user");
 
-        const { workspaceId, projectId, status, search, assigneeId, dueDate } = c.req.valid("query");
+        const { workspaceId, projectId, status, search, /*dueDate*/ } = c.req.valid("query");
+        const { workspaceId, projectId, status, search, /*assigneeId, dueDate*/ } = c.req.valid("query");
 
         const member = await getMember({
             databases,
@@ -61,15 +62,14 @@ app.get(
             query.push(Query.equal("status", status));
         }
 
-        if (assigneeId) {
-            console.log("assigneeId:", assigneeId);
-            query.push(Query.equal("assigneeId", assigneeId));
-        }
-
-        if (dueDate) {
-            console.log("dueDate:", dueDate);
-            query.push(Query.equal("dueDate", dueDate));
-        }
+        // if (dueDate) {
+        //     console.log("dueDate:", dueDate);
+        //     query.push(Query.equal("dueDate", dueDate));
+        // }
+//         if (assigneeId) {
+//             console.log("assigneeId:", assigneeId);
+//             query.push(Query.equal("assigneeId", assigneeId));
+//         }
 
         if (search) {
             console.log("search:", search);
@@ -87,7 +87,7 @@ app.get(
             projectIds.length > 0 ? [Query.contains("$id", projectIds)] : []
         );
 
-        const members = await databases.listDocuments(
+        /* const members = await databases.listDocuments(
             DATABASE_ID,
             MEMBERS_ID,
             assigneeIds.length > 0 ? [Query.contains("$id", assigneeIds)] : []
@@ -111,7 +111,7 @@ app.get(
                     };
                 }
             })
-        );
+        ); */
 
         const populatedTasks = tasks.documents.map((task) => {
             const project = projects.documents.find((proj) => proj.$id === task.projectId);
@@ -120,7 +120,7 @@ app.get(
             return {
                 ...task,
                 project,
-                assignee,
+                // assignee,
             };
         });
 
@@ -141,7 +141,7 @@ app.post(
         const user = c.get("user");
         const databases = c.get("databases");
 
-        const { name, status, workspaceId, projectId, dueDate, assigneeId } = c.req.valid("json");
+        const { name, status, workspaceId, projectId, /*dueDate, assigneeId*/ } = c.req.valid("json");
 
         const member = await getMember({
             databases,
@@ -170,8 +170,8 @@ app.post(
             status,
             workspaceId,
             projectId,
-            dueDate,
-            assigneeId,
+            // dueDate,
+            // assigneeId,
             position: newPosition,
         });
 

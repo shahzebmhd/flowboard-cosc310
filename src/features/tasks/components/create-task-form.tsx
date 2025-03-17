@@ -1,7 +1,7 @@
 import { createTaskSchema } from "../schemas";
 import { useCreateTask } from "../api/use-create-tasks";
-import { DatePicker } from "@/components/date-picker";
-import { MemberAvatar } from "@/features/members/components/member-avatar"; // TODO: FB-3025
+// import { DatePicker } from "@/components/date-picker"; // Unnecessary functionality
+// import { MemberAvatar } from "@/features/members/components/member-avatar"; // UPDATE: uncomment after FB-3025 merge
 import { TaskStatus } from "../types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import {
@@ -41,6 +41,7 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
     });
 
     const onSubmit = (values: z.infer<typeof createTaskSchema>) => {
+        console.log("Form submitted with values:", values);
         mutate(
             { json: { ...values, workspaceId } },
             {
@@ -64,7 +65,9 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
 
             <CardContent className="p-7">
                 <FormProvider {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <form onSubmit={form.handleSubmit(onSubmit, (errors) => {
+                        console.log("Validation Errors:", errors);
+                    })}>
                         <div className="flex flex-col gap-y-4">
                             {/* Task Name Field */}
                             <FormField
@@ -80,8 +83,6 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                     </FormItem>
                                 )}
                             />
-
-                            {/* Due Date Field */}
                             <FormField
                                 control={form.control}
                                 name="dueDate"
@@ -96,7 +97,7 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                 )}
                             />
 
-                            {/* Assignee Field */}
+                            {/* Assignee Field 
                             <FormField
                                 control={form.control}
                                 name="assigneeId"
@@ -123,7 +124,7 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
+                            /> */}
 
                             {/* Status Field */}
                             <FormField
@@ -186,7 +187,6 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                         </div>
 
                         <DottedSeparator className="py-7" />
-
                         <div className="flex items-center justify-between">
                             <Button
                                 type="button"
@@ -198,7 +198,11 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                             >
                                 Cancel
                             </Button>
-                            <Button disabled={isPending} type="submit" size="lg">
+                            <Button 
+                                disabled={isPending}
+                                type="submit" 
+                                size="lg" 
+                            >
                                 Create Task
                             </Button>
                         </div>
