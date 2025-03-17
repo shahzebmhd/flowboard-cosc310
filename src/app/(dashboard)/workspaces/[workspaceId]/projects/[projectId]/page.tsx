@@ -14,17 +14,17 @@ interface ProjectIdPageProps {
 const ProjectIdPage = async ({
     params,
 }: ProjectIdPageProps) => {
-    const user = await getCurrent();
+   const user = await getCurrent();
 
-    if ( !user ) redirect("/sign-in");
+   if ( !user ) redirect("/sign-in");
 
-    const initialValues = await getProject({
-        projectId: params.projectId,
-    });
+   const initialValues = await getProject({
+    projectId: params.projectId,
+   });
 
-    if (!initialValues) {
-        throw new Error("Project not found");
-    }
+   if (!initialValues) {
+    throw new Error("Project not found");
+   }
 
     return (
         <div className="flex flex-col gap-y-4">
@@ -34,7 +34,7 @@ const ProjectIdPage = async ({
                     name={initialValues.name}
                     image={initialValues.ImageUrl}
                     className="size-8"    
-                    />
+                     />
                     <p className="text-lg font-semibold"> {initialValues.name}</p>
                 </div>
                 <div>
