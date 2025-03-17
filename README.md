@@ -417,7 +417,7 @@ This project was made possible thanks to the following technologies, resources, 
 - [Zod](https://zod.dev/) - TypeScript-first schema validation
 
 ### Learning Resources
-- [FreeCodeCamp](https://www.freecodecamp.org/) - Tutorials and learning materials for clean code, documentation, uml and more
+- [FreeCodeCamp](https://www.freecodecamp.org/) - Tutorials and learning materials for clean code, documentation, UML and more
 - [Traversy Media](https://traversymedia.com/) - Jest testing tutorials
 - [Next.js Documentation](https://nextjs.org/docs) - Official Next.js guides
 - [Appwrite Documentation](https://appwrite.io/docs) - Official Appwrite guides
@@ -425,6 +425,9 @@ This project was made possible thanks to the following technologies, resources, 
 - [Trello](https://trello.com/) - Kanban board interface
 - [GitHub Projects](https://github.com/features/issues) - Issue tracking and project management
 - [Code with Antonio - Jira Clone](https://www.codewithantonio.com/projects/jira-clone) - Comprehensive Jira clone tutorial that provided valuable insights for our project structure and implementation approach
+- [GenAI] (ChatGPT, DeepSeek, Qwen, Claude) - GenAI was utilized to help debug, organise, and understand complexities.
+- [StackOverFlow] (https://stackoverflow.com/) - blog posts for fixing various typescript lint errors, and other logic discussions
+- [Figma] (https://www.figma.com/) - Designing the flowchart, dataflow etc 
 
 ## License
 
