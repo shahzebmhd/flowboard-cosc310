@@ -5,11 +5,11 @@ A modern project management application built with Next.js, Appwrite, and Tailwi
 ## Team
 
 ### Developers
-- **Shahzeb Iqbal** [Team Lead]
 - **Jessica**
 - **Mark**
+- **Shahzeb Iqbal** [Team Lead]
 
-### DevOps and Testings
+### DevOps and Unit testings
 - **Q**
 - **Germain**
 
@@ -21,6 +21,7 @@ A modern project management application built with Next.js, Appwrite, and Tailwi
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [API Routes](#api-routes)
+- [Testing](#testing)
 - [Contributing](#contributing)
 
 ## Overview
@@ -34,6 +35,7 @@ Flowboard is a collaborative project management tool that allows teams to organi
 - **Projects**: Organize work into projects within workspaces
 - **Tasks**: Create, assign, and track tasks with different statuses
 - **Members**: Manage workspace members with different roles
+- **Project Analytics**: Track project metrics and progress with visual indicators
 - **Real-time Updates**: Stay in sync with your team's progress
 
 ## Project Structure
@@ -45,10 +47,12 @@ flowboard/
 ├── src/                  # Source code
 ├── public/               # Static assets
 ├── certificates/         # SSL certificates for development
+├── __tests__/            # Jest test files
 ├── .next/                # Next.js build output
 ├── node_modules/         # Dependencies
 ├── .env.local            # Environment variables
 ├── package.json          # Project metadata and dependencies
+├── jest.config.ts        # Jest configuration
 ├── tsconfig.json         # TypeScript configuration
 └── tailwind.config.ts    # Tailwind CSS configuration
 ```
@@ -66,11 +70,18 @@ src/
 │   └── layout.tsx        # Root layout
 ├── components/           # Shared UI components
 │   ├── ui/               # Basic UI components
+│   ├── analytics.tsx     # Project analytics display
+│   ├── analytics-card.tsx # Individual metric card
 │   └── ...               # Higher-level components
 ├── features/             # Feature modules
 │   ├── auth/             # Authentication
 │   ├── workspaces/       # Workspaces
 │   ├── projects/         # Projects
+│   │   ├── api/          # Client-side API hooks
+│   │   │   ├── use-get-project-analytics.ts # Analytics data fetching
+│   │   │   └── ...       # Other project API hooks
+│   │   ├── server/       # Server-side API routes
+│   │   └── ...           # Other project files
 │   ├── tasks/            # Tasks
 │   └── members/          # Members
 ├── lib/                  # Utility functions and libraries
@@ -78,6 +89,21 @@ src/
 │   ├── session-middleware.ts # Session handling
 │   └── utils.ts          # General utilities
 └── config.ts             # Application configuration
+```
+
+### Testing Structure
+
+```
+__tests__/
+├── getCookies.js         # Helper for authentication in tests
+├── testAuth.js           # Authentication API tests
+├── testLogin.js          # Login functionality tests
+├── testMember.js         # Member management tests
+├── testMustPass.js       # Basic sanity tests
+├── testProjects.js       # Project management tests
+├── testSecuredApiAfterLogin.js # Security tests
+├── testTask.js           # Task management tests
+└── testWorkspaces.js     # Workspace management tests
 ```
 
 ### Features Breakdown
@@ -105,7 +131,21 @@ src/
 - **Types**: Project data models
 - **Schemas**: Validation schemas for project forms
 - **API**: Client-side API hooks for projects
+  - **use-get-project-analytics.ts**: Hook for fetching project analytics data
 - **Hooks**: Custom hooks for project functionality
+
+#### Project Analytics
+
+The project analytics feature provides insights into task metrics for each project:
+
+- **Backend Implementation**: Calculates various task metrics and their month-to-month differences
+- **Frontend Components**: Displays metrics with visual indicators for trends
+- **Metrics Tracked**:
+  - Total task count
+  - Assigned task count
+  - Completed task count
+  - Overdue task count
+  - Incomplete task count
 
 #### Tasks (`src/features/tasks/`)
 
@@ -148,6 +188,8 @@ Basic UI components built with Tailwind CSS and Radix UI:
 - **Navbar**: Application navigation bar
 - **Sidebar**: Application sidebar navigation
 - **Projects**: Project listing component
+- **Analytics**: Project analytics display component
+- **AnalyticsCard**: Individual metric card with trend indicators
 - **Workspace-Switcher**: Component to switch between workspaces
 - **Date-Picker**: Date selection component
 - **Mobile-Sidebar**: Mobile-responsive sidebar
@@ -160,6 +202,7 @@ The application uses Hono.js for API routes:
 - **/api/auth**: Authentication endpoints
 - **/api/workspaces**: Workspace management
 - **/api/projects**: Project management
+  - **GET /api/projects/:projectId/analytics**: Fetch project analytics data
 - **/api/tasks**: Task management
 - **/api/members**: Member management
 
@@ -197,22 +240,22 @@ NEXT_PUBLIC_APPWRITE_TASKS_ID=
 NEXT_PUBLIC_APPWRITE_IMAGES_BUCKET_ID=
 ```
 
-## Contributing
+## Testing
 
-1. Create a feature branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-2. Make your changes
-3. Commit your changes:
-   ```bash
-   git commit -m "Description of changes"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature-name
-   ```
-5. Create a pull request
+The application uses Jest for testing API endpoints and functionality. To run tests:
+
+```bash
+npm test
+```
+
+### Test Structure
+
+- **Authentication Tests**: Test user registration, login, and session management
+- **Project Tests**: Test project creation, retrieval, updating, and deletion
+- **Workspace Tests**: Test workspace management functionality
+- **Task Tests**: Test task creation and management
+- **Member Tests**: Test member invitation and role management
+
 ## Test Summary
 
 **Total Time:** 20.89 seconds  
@@ -323,10 +366,52 @@ NEXT_PUBLIC_APPWRITE_IMAGES_BUCKET_ID=
    - ✅ Passed: Should return 401 Unauthorized if user is not a member of the workspace (**1 sec 776 ms**)
    - ✅ Passed: Should return 400 Bad Request if workspaceId is missing (**280 ms**)
 
+## Contributing
 
+1. Create a feature branch following the naming convention `FB-XXXX-FeatureBranchName` where:
+   - `FB` is the project identifier for Flowboard
+   - `XXXX` is the ticket/issue number (e.g., 4034)
+   - `FeatureBranchName` is a brief descriptive name of the feature (e.g., projectAnalytics)
+   
+   ```bash
+   git checkout -b FB-4034-projectAnalytics
+   ```
 
+2. Make your changes
 
+3. Commit your changes with a descriptive message:
+   ```bash
+   git commit -m "FB-4034: Implement project analytics feature"
+   ```
 
+4. Push to the branch:
+   ```bash
+   git push origin FB-4034-projectAnalytics
+   ```
+
+5. Create a pull request with a clear description of the changes and reference to the ticket number, template is in trello
+
+## Citations & Acknowledgments
+
+This project was inspired by and built with guidance from various professional resources available on the internet:
+
+### Technologies & Libraries
+- [Next.js](https://nextjs.org/) - React framework
+- [Appwrite](https://appwrite.io/) - Backend as a Service
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Hono.js](https://hono.dev/) - Lightweight API framework
+- [React Query](https://tanstack.com/query) - Data fetching library
+- [Jest](https://jestjs.io/) - Testing framework
+- [Figma](https://www.figma.com/) - Design and prototyping tool
+
+### Learning Resources
+- [Introduction to Jest](https://www.youtube.com/watch?v=FgnxcUQ5vho) - Testing framework implementation
+- [Docker File, Image and Container](https://www.youtube.com/watch?v=C-bX86AgyiA) - Docker containerization concepts
+- [GitHub CI/CD](https://www.youtube.com/watch?v=mFFXuXjVgkU) - Continuous integration and deployment workflow
+- [Antonio Erdeljac's Jira Clone Tutorial](https://www.youtube.com/watch?v=Av9C7xlV0fA) - Full-stack application development with Next.js and Appwrite
+- [Shadcn UI] - [Component Library](https://ui.shadcn.com/) - UI components and design system
+- [freeCodeCamp] - [Tips for Writing Clean Code](https://www.freecodecamp.org/news/tips-for-writing-clean-code/) - Best practices for code organization and readability
+- [Introduction to Git](https://www.youtube.com/watch?v=RGOj5yH7evk&t=3092s) - Git and Github Crashcourse
 
 ## License
 

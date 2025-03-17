@@ -1,0 +1,7 @@
+{
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/[[...route]]/route": "app/api/[[...route]]/route.js",
+  "/(dashboard)/page": "app/(dashboard)/page.js",
+  "/(dashboard)/workspaces/[workspaceId]/page": "app/(dashboard)/workspaces/[workspaceId]/page.js",
+  "/(dashboard)/workspaces/[workspaceId]/projects/[projectId]/page": "app/(dashboard)/workspaces/[workspaceId]/projects/[projectId]/page.js"
+}
