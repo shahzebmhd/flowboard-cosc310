@@ -15,14 +15,14 @@ import Image from "next/image"
 import {ArrowLeftIcon, CopyIcon, Delete, ImageIcon} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Workspace } from "../types";
+import { workspace } from "../types";
 import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { useDeleteWorkspace } from "../api/use-delete-workspace ";
 
 
 interface EditWorkspaceFormProps {
     onCancel?: () => void;
-    initialValues: Workspace;
+    initialValues: workspace;
   }
   
   const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceFormProps) => {
