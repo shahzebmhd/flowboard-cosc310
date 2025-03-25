@@ -168,14 +168,14 @@ app.get(
      sessionMiddleware,
      zValidator("json",z.object({code :z.string()})),
      async (c) => {
-        const workspaceId = c.req.param();
+        const {workspaceId} = c.req.param();
         const {code} = c.req.valid("json");
         const databases = c.get("databases");
         const user = c.get("user");
 
         const member = await getMember({
             databases,
-            workspaceId,
+            workspaceId ,
             userId: user.$id,
         });
 
@@ -188,7 +188,7 @@ app.get(
             WORKSPACES_ID,
             workspaceId,
         );
-        if (!workspace.inviteCode!== code){
+        if (workspace.inviteCode !== code){
             return c.json({error: "Invalid invite code"}, 400);
         }
         await databases.createDocument(
@@ -203,6 +203,31 @@ app.get(
         );
 
     return c.json({data: workspace});
+    }
+)
+
+.delete(
+    "/:workspaceId",
+    sessionMiddleware,
+    async (c) => {
+        const databases = c.get("databases");
+        const user = c.get("user");
+        const {workspaceId} = c.req.param();
+
+        const member = await getMember({
+            databases,
+            workspaceId,
+            userId: user.$id,
+        });
+
+        if (!member || member.role !== MemberRole.ADMIN){
+            return c.json({error: "Unauthorized"}, 401);
+        }
+        //TODO: delete members,projects and tasks
+
+        await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, workspaceId);
+
+        return c.json({$id: workspaceId});
     }
 )
 
