@@ -8,7 +8,7 @@ import {ID, Query} from "node-appwrite";
 import {MemberRole} from "@/features/members/type";
 import {generateInviteCode} from "@/lib/utils";
 import { getMember } from "@/features/members/utils";
-import { Workspace } from "../types";
+import { workspace } from "../types";
 
 const app = new Hono()
     .get("/", sessionMiddleware, async (c) => {
@@ -183,7 +183,7 @@ app.get(
             return c.json({error: "Already a member"}, 400);
         }
 
-        const workspace = await databases.getDocument<Workspace>(
+        const workspace = await databases.getDocument<workspace>(
             DATABASE_ID,
             WORKSPACES_ID,
             workspaceId,

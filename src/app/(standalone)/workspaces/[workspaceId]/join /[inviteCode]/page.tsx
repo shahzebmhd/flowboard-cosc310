@@ -6,24 +6,24 @@ import React from 'react';
 interface WorkspaceIdJoinPageProps {
     params: { workspaceId: string ;
     };
-};
+}
 
 
 const WorkspaceIdJoinPage = async ({
-        params,}:WorkspaceIdJoinPageProps) => {
-        const user = await getCurrent();
-        if (!user) redirect("/sign-in");
+                params}:WorkspaceIdJoinPageProps) => {
+                const user = await getCurrent();
+                if (!user) redirect("/sign-in");
 
-        const initialValues = await getWorkspaceInfo({ workspaceId: params.workspaceId });
+                const initialValues = await getWorkspaceInfo({ workspaceId: params.workspaceId });
 
-        if (!initialValues) {
-            redirect("/");
-        return (
-            <div className="w-full lg:max-w-xl">
-            <JoinWorkspaceForm initialValues={initialValues || { name: "" }} />
-            </div>
-        );
-    };
-        };
+                if (!initialValues) {
+                    redirect("/");
+                return (
+                    <div className="w-full lg:max-w-xl">
+                    <JoinWorkspaceForm initialValues={initialValues || { name: "" }} />
+                    </div>
+                );
+            };
+                };
 
 export default WorkspaceIdJoinPage;
