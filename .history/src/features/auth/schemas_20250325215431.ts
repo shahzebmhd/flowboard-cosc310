@@ -15,7 +15,7 @@ export const registerSchema = z.object({
 export const settingsSchema = z.object({
     theme: z.enum(['light', 'dark']),
     autoSave: z.boolean().optional(),
-    customColours: z.object({
+    customColors: z.object({
         background: z.string().optional(), 
         text: z.string().optional(),
     }).optional(),
