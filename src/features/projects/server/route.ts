@@ -10,6 +10,8 @@ import { createProjectSchema } from "../schemas";
 import { MemberRole } from "@/features/members/type";
 import { generateInviteCode } from "@/lib/utils";
 import { get } from "http";
+import { endOfMonth, startOfMonth, subMonths } from "date-fns";
+
 
 
 const app = new Hono();
@@ -71,7 +73,7 @@ app.post(
 app.get(
     "/",
     sessionMiddleware,
-    zValidator("query",z.object({workspaceid: z.string()})),
+    zValidator("query",z.object({workspaceId: z.string()})),
     async (c) => {
         const user = c.get("user");
         const databases = c.get("databases");

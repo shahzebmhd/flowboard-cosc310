@@ -229,10 +229,6 @@ app.get(
 
         return c.json({$id: workspaceId});
     }
-)
+);
 
 export default app;
-
-function post(arg0: string, sessionMiddleware: (c: any) => Promise<any>, arg2: unknown) {
-    throw new Error("Function not implemented.");
-}
