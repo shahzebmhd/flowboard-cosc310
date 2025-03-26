@@ -15,7 +15,7 @@ import { useSettings } from "../api/use-settings";
 
 export const UserButton = () => {
     const { data: user, isLoading: isUserLoading } = useCurrent();
-    const { mutate: logout } = useLogout();
+    const {mutate: logout } = useLogout();
     const { data: settings, isLoading: isSettingsLoading, isError: isSettingsError } = useSettings();
 
     if (isUserLoading || isSettingsLoading) {
@@ -23,6 +23,12 @@ export const UserButton = () => {
             <div className="size-10 rounded-full flex items center justify center bg-neutral-200 border border-neutral-300">
                 <Loader className="size-4 animate-spin text-muted-foreground" />
             </div>
+        );
+    }
+
+    if (isSettingsError) {
+        return (
+            <div>Error loading settings. Please try again later.</div>
         );
     }
 
@@ -59,7 +65,7 @@ export const UserButton = () => {
         </div>
             </div>
             <DropdownMenuItem
-            onClick={() => settings<typeof >()}
+            onClick={() => console.log("Settings clicked")}
             className="h-10 flex items-center justify-center text-neutral-500 font-medium crsor-pointer"
             >
                 <Settings />

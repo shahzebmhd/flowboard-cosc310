@@ -16,7 +16,7 @@ export const settingsSchema = z.object({
     theme: z.enum(['light', 'dark']),
     autoSave: z.boolean(),
     customColors: z.object({
-        background: z.string(), 
-        text: z.string(),
-    }),
+        background: z.string().optional(), 
+        text: z.string().optional(),
+    }).optional(),
 });

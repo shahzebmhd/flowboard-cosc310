@@ -18,5 +18,5 @@ export const settingsSchema = z.object({
     customColors: z.object({
         background: z.string(), 
         text: z.string(),
-    }),
+    }).optional(),
 });

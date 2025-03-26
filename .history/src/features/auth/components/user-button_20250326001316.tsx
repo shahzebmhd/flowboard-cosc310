@@ -59,7 +59,7 @@ export const UserButton = () => {
         </div>
             </div>
             <DropdownMenuItem
-            onClick={() => settings<typeof >()}
+            onClick={() => {}}
             className="h-10 flex items-center justify-center text-neutral-500 font-medium crsor-pointer"
             >
                 <Settings />

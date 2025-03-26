@@ -1,5 +1,5 @@
 import { z, ZodAny } from "zod";
-import { useAccountSettings } from "../api/use-account-settings";
+import { useSettings } from "../api/use-settings";
 import { settingsSchema } from "../schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +15,7 @@ interface CreateSettingsFormProps {
 export const CreateSettingsForm = ({ 
     onCancel,
 }: CreateSettingsFormProps ) => {
-    const { mutate: currentSettings, isPending } = useAccountSettings();
+    const { data: currentSettings, isLoading } = useSettings();
     const { mutate: updateSettings, } = useUpdateSettings();
     
     const form = useForm<z.infer<typeof settingsSchema>>({
@@ -24,22 +24,21 @@ export const CreateSettingsForm = ({
         defaultValues: currentSettings || {
             theme: 'light',
             autoSave: true,
-            customColours: {
+            customColors: {
                 background: '#FFFFFF',
                 text: '#000000',
             },
         },
     });
     
-    const onSubmit = (values: typeof currentSettings) => {
-        // @ts-ignore
+    const onSubmit = (values: z.infer<typeof settingsSchema>) => {
         updateSettings(values);
     };
     
     if (isPending) {
         return (
             <div>
-                <Loader/>
+                <Loader className="size-4 animate-spin text-muted-foreground"/>
                 Loading settings...
             </div>
         );

@@ -15,7 +15,7 @@ import { useSettings } from "../api/use-settings";
 
 export const UserButton = () => {
     const { data: user, isLoading: isUserLoading } = useCurrent();
-    const { mutate: logout } = useLogout();
+    const {mutate: logout } = useLogout();
     const { data: settings, isLoading: isSettingsLoading, isError: isSettingsError } = useSettings();
 
     if (isUserLoading || isSettingsLoading) {
@@ -59,7 +59,7 @@ export const UserButton = () => {
         </div>
             </div>
             <DropdownMenuItem
-            onClick={() => settings<typeof >()}
+            onClick={() => settings}
             className="h-10 flex items-center justify-center text-neutral-500 font-medium crsor-pointer"
             >
                 <Settings />
