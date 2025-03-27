@@ -5,7 +5,7 @@ import { ResponsiveModal } from "@/components/responsive-modal";
 import { AccountSettingsForm } from "./account-settings-form";
 
 export const AccountSettingsModal = () => {
-    const { isOpen, setIsOpen, close, open } = useAccountSettingsModal();
+    const { isOpen, setIsOpen, close } = useAccountSettingsModal();
     
     return (
         <div>
