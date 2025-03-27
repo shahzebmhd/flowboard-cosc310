@@ -1,11 +1,13 @@
-import { z, ZodAny } from "zod";
-import { useSettings } from "../api/use-settings";
+"use client";
+
+import { z } from "zod";
+import { useAccountSettings } from "../api/use-account-settings";
 import { settingsSchema } from "../schemas";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DottedSeparator } from "@/components/ui/dotted-separator";
-import { useUpdateSettings } from "../api/use-update-settings";
+import { useUpdateSettings } from "../api/use-update-account-settings";
 import { Loader } from "lucide-react";
 import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -13,14 +15,15 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 
 const Checkbox = CheckboxPrimitive.Root;
 
-interface CreateSettingsFormProps {
+interface SettingsFormProps {
     onCancel?: () => void;
+    initialValues: z.infer<typeof settingsSchema>;
 }
 
-export const CreateSettingsForm = ({ 
+export const AccountSettingsForm = ({ 
     onCancel,
-}: CreateSettingsFormProps ) => {
-    const { data: currentSettings, isLoading } = useSettings();
+}: SettingsFormProps ) => {
+    const { data: currentSettings, isPending } = useAccountSettings();
     const { mutate: updateSettings, } = useUpdateSettings();
     
     const form = useForm<z.infer<typeof settingsSchema>>({
@@ -37,10 +40,16 @@ export const CreateSettingsForm = ({
     });
     
     const onSubmit = (values: z.infer<typeof settingsSchema>) => {
-        updateSettings(values);
+        updateSettings(
+            values,
+            {onSuccess: () => {
+                form.reset();
+                onCancel?.();
+            }}
+        );
     };
     
-    if (isLoading) {
+    if (isPending) {
         return (
             <div>
                 <Loader className="size-4 animate-spin text-muted-foreground"/>

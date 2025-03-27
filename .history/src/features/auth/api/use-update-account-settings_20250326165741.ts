@@ -11,23 +11,29 @@ export type SettingsRequest = {
     };
 };
 
-export const useUpdateSettings = () => {
+export const useUpdateAccountSettings = () => {
     const queryClient = useQueryClient();
-
+    
     const mutation = useMutation<void, Error, SettingsRequest>({
         mutationFn: async (newSettings) => {
-            // @ts-ignore
-            const response = await client.settings.update[$post](newSettings);
-            return response.json();
+            try {
+                // @ts-ignore
+                const response = await client.settings.update[$post](newSettings);
+                return response.json();
+            } catch (error) {
+                console.error("Error updating settings:", error);
+                throw error;
+            }
         },
         onSuccess: () => {
             toast.success("Settings updated successfully");
             queryClient.invalidateQueries({ queryKey: ["settings"] });
         },
-        onError: () => {
+        onError: (error) => {
             toast.error("Failed to update settings");
+            console.error("Failed to update settings:", error);
         },
     });
-
+    
     return mutation;
 };

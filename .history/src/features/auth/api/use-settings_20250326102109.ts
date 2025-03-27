@@ -30,13 +30,5 @@ export const useSettings = () => {
         
     });
 
-    return { data, error, isLoading, isError, fetchSettings(){} };
-};
-
-const fetchSettings = async (): Promise<SettingsResponse> => {
-    return {
-        theme: "light",
-        autoSave: true,
-        customColors: { background: "#fff", text: "#000" },
-    };
+    return { data, error, isLoading, isError, };
 };
