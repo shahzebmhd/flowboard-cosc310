@@ -13,9 +13,9 @@ export type SettingsRequest = {
 };
 
 // @ts-expect-error
-export type ResponseType = InferResponseType<typeof client.api["account-settings"]["$patch"],200>;
+export type ResponseType = InferResponseType<typeof client.api.accountSettings["$patch"],200>;
 // @ts-expect-error
-export type RequestType = InferRequestType<typeof client.api["account-settings"]["$patch"]>;
+export type RequestType = InferRequestType<typeof client.api.accountSettings["$patch"]>;
 
 export const useUpdateAccountSettings = () => {
     const queryClient = useQueryClient();
@@ -24,10 +24,10 @@ export const useUpdateAccountSettings = () => {
         Error,
         RequestType
     >({
-        mutationFn: async ({ form }) => {
+        mutationFn: async ({ newSettings }) => {
             try {
                 // @ts-ignore
-                const response = await client.api["account-settings"]["$patch"]({ form });
+                const response = await client.api.accountSettings.update["$patch"]({ newSettings });
                 return response.json();
             } catch (error) {
                 console.error("Error updating settings:", error);

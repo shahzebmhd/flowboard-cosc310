@@ -13,9 +13,9 @@ export type SettingsRequest = {
 };
 
 // @ts-expect-error
-export type ResponseType = InferResponseType<typeof client.api["account-settings"]["$patch"],200>;
+export type ResponseType = InferResponseType<typeof client.api.accountSettings["$patch"],200>;
 // @ts-expect-error
-export type RequestType = InferRequestType<typeof client.api["account-settings"]["$patch"]>;
+export type RequestType = InferRequestType<typeof client.api.accountSettings["$patch"]>;
 
 export const useUpdateAccountSettings = () => {
     const queryClient = useQueryClient();
