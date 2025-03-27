@@ -15,4 +15,4 @@ export const useAccountSettingsModal = () => {
         close, 
         setIsOpen
     };
-};    
+};    console.log("This shit ain't working");

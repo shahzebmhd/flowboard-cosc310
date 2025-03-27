@@ -17,20 +17,18 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
 const Checkbox = CheckboxPrimitive.Root;
 
-interface SettingsFormProps {
+interface AccountSettingsFormProps {
     onCancel?: () => void;
 }
 
 export const AccountSettingsForm = ({ 
     onCancel,
-}: SettingsFormProps ) => {
+}: AccountSettingsFormProps ) => {
     const { data: currentSettings, isPending } = useAccountSettings();
     const { mutate, } = useUpdateAccountSettings();
     const router = useRouter();
     const workspaceId = useWorkspaceId();
     
-    console.log("Current settings:", currentSettings);
-
     const form = useForm<z.infer<typeof settingsSchema>>({
         resolver: zodResolver(settingsSchema),
         defaultValues: currentSettings || {
@@ -40,6 +38,7 @@ export const AccountSettingsForm = ({
                 background: '#FFFFFF',
                 text: '#000000',
             },
+            name: "",
         },
     });
 
@@ -64,92 +63,86 @@ export const AccountSettingsForm = ({
             </div>
         );
     };
-    return <Card><CardHeader><CardTitle>Test</CardTitle></CardHeader></Card>
-    // return (
-    //     <Card className="w-full h-full border-none shadow-none">
-    //         <CardHeader className="flex p-7">
-    //             <CardTitle className="text-xl font-bold">Account Settings</CardTitle>
-    //         </CardHeader>
-    //         <div className="px-7">
-    //             <DottedSeparator/>
-    //         </div>
+    
+    return (
+        <Card className="w-full h-full border-none shadow-none">
+            <CardHeader className="flex p-7">
+                <CardTitle className="text-xl font-bold">Account Settings</CardTitle>
+            </CardHeader>
+            <div className="px-7">
+                <DottedSeparator/>
+            </div>
             
-    //         <CardContent className="p-7">
-    //             <FormProvider {...form}>
-    //                 <form onSubmit={form.handleSubmit(onSubmit)}>
-    //                     <div className="flex flex-col gap-y-4">
-    //                         <FormField
-    //                             control={form.control}
-    //                             name="theme"
-    //                             render={({ field }) => (
-    //                                 <FormItem>
-    //                                     <FormLabel>Placeholder</FormLabel>
-    //                                     <FormControl>
-    //                                         <Input {...field} placeholder="Select theme" />
-    //                                     </FormControl>
-    //                                 </FormItem>
-    //                             )}
-    //                         />
+            <CardContent className="p-7">
+                <FormProvider {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <div className="flex flex-col gap-y-4">
+                            <FormField
+                                control={form.control}
+                                name="theme"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Placeholder</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} placeholder="Select theme" />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
 
-    //                         <FormField 
-    //                             control={form.control}
-    //                             name="autoSave"
-    //                             render= {({ field }) => (
-    //                                 <FormItem>
-    //                                     <FormLabel>Auto Save</FormLabel>
-    //                                     <FormControl>
-    //                                     <Checkbox
-    //                                             checked={field.value || false} // Ensure it's a boolean
-    //                                             onCheckedChange={(checked) => {
-    //                                                 field.onChange(checked); // Handle the checkbox change
-    //                                             }}
-    //                                             className="h-4 w-4 rounded-sm border border-primary"
-    //                                         >
-    //                                             <CheckboxPrimitive.Indicator>
-    //                                                 {/* Custom indicator icon */}
-    //                                                 <span className="w-4 h-4 bg-primary text-white"></span>
-    //                                             </CheckboxPrimitive.Indicator>
-    //                                         </Checkbox>
-    //                                     </FormControl>
-    //                                 </FormItem>
-    //                             )}
-    //                         />
+                            <FormField 
+                                control={form.control}
+                                name="autoSave"
+                                render= {({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Auto Save</FormLabel>
+                                        <FormControl>
+                                        <Checkbox
+                                                checked={field.value || false} // Ensure it's a boolean
+                                                onCheckedChange={(checked) => {
+                                                    field.onChange(checked); // Handle the checkbox change
+                                                }}
+                                                className="h-4 w-4 rounded-sm border border-primary"
+                                            >
+                                                <CheckboxPrimitive.Indicator>
+                                                    {/* Custom indicator icon */}
+                                                    <span className="w-4 h-4 bg-primary text-white"></span>
+                                                </CheckboxPrimitive.Indicator>
+                                            </Checkbox>
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
 
-    //                         <FormField 
-    //                             control={form.control}
-    //                             name="customColors.background"
-    //                             render={({ field }) => (
-    //                                 <FormItem>
-    //                                     <FormLabel>Background Color</FormLabel>
-    //                                     <FormControl>
-    //                                         <Input {...field} type="color" />
-    //                                     </FormControl>
-    //                                 </FormItem>
-    //                             )}
-    //                         />
+                            <FormField 
+                                control={form.control}
+                                name="customColors.background"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Background Color</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} type="color" />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
 
-    //                         <FormField
-    //                             control={form.control}
-    //                             name="customColors.text"
-    //                             render={({ field }) => (
-    //                                 <FormItem>
-    //                                     <FormLabel>Text Color</FormLabel>
-    //                                     <FormControl>
-    //                                         <Input {...field} type="color" />
-    //                                     </FormControl>
-    //                                 </FormItem>
-    //                             )}
-    //                         />
-    //                     </div>
-    //                     <button 
-    //                         type="submit"
-    //                         className="mt-4 bg-blue-500 text-white p2-rounded"
-    //                     >
-    //                         Save Settings
-    //                     </button>
-    //                 </form>
-    //             </FormProvider>
-    //         </CardContent>
-    //     </Card>
-    // );
+                            <FormField
+                                control={form.control}
+                                name="customColors.text"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Text Color</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} type="color" />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </form>
+                </FormProvider>
+            </CardContent>
+        </Card>
+    );
 };

@@ -6,7 +6,9 @@ export const useCreateProjectModal = () => {
         "create-project",
         parseAsBoolean.withDefault(false).withOptions({ clearOnDefault: true })
     );
-    
+    useEffect(() => {
+        console.log("Modal visibility status:", isOpen);  // Log isOpen value here
+    }, [isOpen]);
     const open = () => setIsOpen(true);
     const close = () => setIsOpen(false);
 

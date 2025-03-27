@@ -17,13 +17,13 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
 const Checkbox = CheckboxPrimitive.Root;
 
-interface SettingsFormProps {
+interface AccountSettingsFormProps {
     onCancel?: () => void;
 }
 
 export const AccountSettingsForm = ({ 
     onCancel,
-}: SettingsFormProps ) => {
+}: AccountSettingsFormProps ) => {
     const { data: currentSettings, isPending } = useAccountSettings();
     const { mutate, } = useUpdateAccountSettings();
     const router = useRouter();
