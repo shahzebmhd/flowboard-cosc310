@@ -57,7 +57,7 @@ export const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
     return (
         <div className="flex flex-col lg:flex-row gap-2">
             {/* Status Filter */}
-            <Select defaultValue={status ?? undefined} onValueChange={onStatusChange}>
+            <Select value={status ?? "all"} onValueChange={onStatusChange}>
                 <SelectTrigger className="w-full lg:w-auto h-8">
                     <div className="flex items-center">
                         <ListChecksIcon className="size-4 mr-2" />

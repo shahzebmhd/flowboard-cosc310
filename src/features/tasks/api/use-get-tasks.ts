@@ -27,10 +27,9 @@ export const useGetTasks = ({
             status,
             assigneeId,
             dueDate,
+            search
         ],
         queryFn: async () => {
-         //TODO
-        // @ts-ignore
             const response = await client.api.tasks.$get({
                 query: {
                     workspaceId,
@@ -49,5 +48,8 @@ export const useGetTasks = ({
             const { data } = await response.json();
             return data;
         },
+        refetchOnWindowFocus: true,
+        refetchOnMount: true,
+        staleTime: 0 // Consider all data stale immediately
     });
 };
