@@ -3,7 +3,7 @@ import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { Loader } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { EditTaskForm } from "./edit-task-form";
+import { CreateTaskForm } from "./create-task-form";
 import { useGetTask } from "../api/use-get-task";
 import React from "react";
 
@@ -47,7 +47,7 @@ export const EditTaskFormWrapper = ({ onCancel, id }: EditTaskFormWrapperProps) 
   }
 
   return (
-    <EditTaskForm
+    <CreateTaskForm
       onCancel={onCancel}
       initialValues={initialValues}
       projectOptions={projectOptions ?? []}
