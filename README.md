@@ -4,10 +4,14 @@ A modern project management application built with Next.js, Appwrite, and Tailwi
 
 ## Team
 
-### Developers and Testers
+### Developers
 - **Shahzeb Iqbal** [Team Lead]
 - **Jessica**
 - **Mark**
+
+### DevOps and Testings
+- **Q**
+- **Germain**
 
 ## Table of Contents
 
@@ -39,49 +43,41 @@ Flowboard is a collaborative project management tool that allows teams to organi
 ```
 flowboard/
 ├── src/                  # Source code
-├── public/              # Static assets
-├── certificates/        # SSL certificates for development
-├── .next/              # Next.js build output
-├── node_modules/       # Dependencies
-├── .env.local          # Environment variables
-├── package.json        # Project metadata and dependencies
-├── tsconfig.json       # TypeScript configuration
-├── tailwind.config.ts  # Tailwind CSS configuration
-├── postcss.config.mjs  # PostCSS configuration
-├── next.config.mjs     # Next.js configuration
-├── components.json     # UI components configuration
-├── docker-compose.yml  # Docker configuration
-└── Dockerfile         # Docker build configuration
+├── public/               # Static assets
+├── certificates/         # SSL certificates for development
+├── .next/                # Next.js build output
+├── node_modules/         # Dependencies
+├── .env.local            # Environment variables
+├── package.json          # Project metadata and dependencies
+├── tsconfig.json         # TypeScript configuration
+└── tailwind.config.ts    # Tailwind CSS configuration
 ```
 
 ### Source Code Structure
 
 ```
 src/
-├── app/              # Next.js App Router
-│   ├── (auth)/      # Authentication pages
-│   ├── (dashboard)/ # Dashboard pages
-│   ├── api/         # API routes
-│   ├── globals.css  # Global styles
-│   └── layout.tsx   # Root layout
-├── components/      # Shared UI components
-│   ├── ui/         # Basic UI components (buttons, inputs, etc.)
-│   └── data-table  # Table components and utilities
-├── features/       # Feature modules
-│   ├── tasks/     # Task management
-│   │   ├── api/   # Task-related API hooks
-│   │   ├── components/ # Task-specific components
-│   │   ├── hooks/     # Task-related hooks
-│   │   ├── server/    # Server-side task logic
-│   │   ├── types.ts   # Task type definitions
-│   │   └── schemas.ts # Task validation schemas
-│   ├── projects/  # Project management
-│   └── members/   # Member management
-├── hooks/        # Global custom hooks
-├── lib/         # Utility functions and configurations
-│   ├── utils.ts # Common utility functions
-│   └── rpc.ts   # API client setup
-└── config.ts    # Global configuration constants
+├── app/                  # Next.js App Router
+│   ├── (auth)/           # Authentication pages
+│   ├── (dashboard)/      # Dashboard pages
+│   ├── (standalone)/     # Standalone pages
+│   ├── api/              # API routes
+│   ├── globals.css       # Global styles
+│   └── layout.tsx        # Root layout
+├── components/           # Shared UI components
+│   ├── ui/               # Basic UI components
+│   └── ...               # Higher-level components
+├── features/             # Feature modules
+│   ├── auth/             # Authentication
+│   ├── workspaces/       # Workspaces
+│   ├── projects/         # Projects
+│   ├── tasks/            # Tasks
+│   └── members/          # Members
+├── lib/                  # Utility functions and libraries
+│   ├── appwrite.ts       # Appwrite client setup
+│   ├── session-middleware.ts # Session handling
+│   └── utils.ts          # General utilities
+└── config.ts             # Application configuration
 ```
 
 ### Features Breakdown
@@ -189,21 +185,6 @@ npx next dev --experimental-https
 
 Create a `.env.local` file with the following variables:
 
-```env
-# Appwrite Configuration
-NEXT_PUBLIC_APPWRITE_ENDPOINT="your_appwrite_endpoint"
-NEXT_PUBLIC_APPWRITE_PROJECT_ID="your_project_id"
-APPWRITE_API_KEY="your_api_key"
-
-# Database Configuration
-DATABASE_ID="your_database_id"
-TASKS_ID="your_tasks_collection_id"
-MEMBERS_ID="your_members_collection_id"
-PROJECTS_ID="your_projects_collection_id"
-
-# Optional: Development SSL Certificates (for HTTPS)
-SSL_CERT_PATH="./certificates/localhost.pem"
-SSL_KEY_PATH="./certificates/localhost-key.pem"
 ```
 NEXT_PUBLIC_APPWRITE_ENDPOINT=
 NEXT_PUBLIC_APPWRITE_PROJECT=

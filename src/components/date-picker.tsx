@@ -2,7 +2,7 @@
 
 import React from "react";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ import {
 
 interface DatePickerProps {
   value: Date | undefined;
-  onChange: (date: Date) => void;
+  onChange: (date: Date | undefined) => void;
   className?: string;
   placeholder?: string;
 }
@@ -29,18 +29,35 @@ export const DatePicker = ({
 }: DatePickerProps) => {
   return (
     <Popover>
-       <PopoverTrigger asChild>
-           <Button
+      <PopoverTrigger asChild>
+        <Button
           variant="outline"
           size="lg"
           className={cn(
-            "w-full justify-start text-left font-normal px-3",
+            "w-full justify-start text-left font-normal relative pr-8",
             !value && "text-muted-foreground",
             className
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, "PPP") : <span>{placeholder}</span>}
+          <div className="flex items-center gap-2 truncate">
+            <CalendarIcon className="h-4 w-4 shrink-0" />
+            <span className="truncate">
+              {value ? format(value, "PPP") : placeholder}
+            </span>
+          </div>
+          {value && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-0 absolute right-1 top-1/2 -translate-y-1/2"
+              onClick={(e) => {
+                e.stopPropagation();
+                onChange(undefined);
+              }}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
