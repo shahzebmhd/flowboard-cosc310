@@ -1,17 +1,15 @@
 "use client";
-import { useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, FormProvider, Controller } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DottedSeparator } from "@/components/ui/dotted-separator";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftIcon, CopyIcon, ImageIcon } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { settingsSchema } from "@/features/auth/schemas";
+import { settingsSchema } from "../schemas";
 import { useUpdateAccountSettings } from "../api/use-update-account-settings";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
@@ -24,8 +22,6 @@ export const UpdateAccountSettingsForm =({ onCancel, initialValues }: UpdateAcco
     const router = useRouter();
     const { mutate, isPending } = useUpdateAccountSettings();
     const workspaceId = useWorkspaceId();
-
-    const inputRef = useRef<HTMLInputElement>(null);
 
     const form = useForm<z.infer<typeof settingsSchema>>({
         resolver: zodResolver(settingsSchema),
