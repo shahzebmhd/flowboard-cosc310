@@ -11,6 +11,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MoreVertical } from "lucide-react";
 import { TaskActions } from "./task-actions";
+import { ProjectAvatar } from "@/features/projects/components/project-avatar";
+import { MemberAvatar } from "@/features/members/components/member-avatar";
+import { format } from "date-fns";
 
 interface DataKanbanProps {
     data: Task[];
@@ -21,7 +24,7 @@ const getColumnTitle = (status: TaskStatus): { title: string; color: string } =>
         case TaskStatus.BACKLOG:
             return { title: "Backlog", color: "bg-pink-100" };
         case TaskStatus.TODO:
-            return { title: "To Do", color: "bg-red-100" };
+            return { title: "Todo", color: "bg-red-100" };
         case TaskStatus.IN_PROGRESS:
             return { title: "In Progress", color: "bg-yellow-100" };
         case TaskStatus.IN_REVIEW:
@@ -69,7 +72,6 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
         const sourceStatus = source.droppableId as TaskStatus;
         const destinationStatus = destination.droppableId as TaskStatus;
 
-        // Don't do anything if dropped in the same position
         if (
             sourceStatus === destinationStatus &&
             source.index === destination.index
@@ -80,7 +82,6 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
         const newTasksState = { ...tasks };
         const [movedTask] = newTasksState[sourceStatus].splice(source.index, 1);
         
-        // Calculate new position
         const destinationTasks = newTasksState[destinationStatus];
         const newPosition = calculateNewPosition(
             destination.index,
@@ -93,11 +94,9 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
             position: newPosition,
         };
 
-        // Update local state
         newTasksState[destinationStatus].splice(destination.index, 0, updatedTask);
         setTasks(newTasksState);
 
-        // Update in backend
         updateTask({
             param: { taskId: draggableId },
             json: {
@@ -119,20 +118,25 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
 
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
-            <div className="flex gap-6 overflow-x-auto px-2 pb-4">
+            <div className="flex gap-4 overflow-x-auto px-2 pb-4">
                 {boards.map((boardId) => {
                     const { title, color } = getColumnTitle(boardId);
                     const columnTasks = tasks[boardId];
                     return (
-                        <div key={boardId} className="bg-white rounded-lg shadow-sm w-[320px] flex-shrink-0">
-                            <div className={`p-4 rounded-t-lg ${color}`}>
+                        <div key={boardId} className="bg-white rounded-lg w-[280px] flex-shrink-0">
+                            <div className={`p-3 rounded-t-lg ${color}`}>
                                 <div className="flex items-center justify-between">
-                                    <h3 className="font-semibold text-neutral-700">
-                                        {title}
-                                    </h3>
-                                    <Badge variant="secondary" className="bg-white/50">
-                                        {columnTasks.length}
-                                    </Badge>
+                                    <div className="flex items-center gap-2">
+                                        <h3 className="font-medium text-sm text-neutral-700">
+                                            {title}
+                                        </h3>
+                                        <Badge variant="secondary" className="bg-white/80">
+                                            {columnTasks.length}
+                                        </Badge>
+                                    </div>
+                                    <Button variant="ghost" size="icon" className="size-6">
+                                        <MoreVertical className="size-4" />
+                                    </Button>
                                 </div>
                             </div>
                             <Droppable droppableId={boardId} type="task">
@@ -157,20 +161,41 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
                                                             snapshot.isDragging ? 'shadow-lg scale-105' : ''
                                                         }`}
                                                     >
-                                                        <div className="flex items-start justify-between gap-x-2">
-                                                            <div className="flex-1 min-w-0">
-                                                                <p className="font-medium text-sm">{task.name}</p>
-                                                                {task.description && (
-                                                                    <p className="text-xs text-neutral-500 mt-1">
-                                                                        {task.description}
-                                                                    </p>
+                                                        <div className="flex flex-col gap-2">
+                                                            <div className="flex items-start justify-between gap-x-2">
+                                                                <p className="font-medium text-sm line-clamp-2">{task.name}</p>
+                                                                <TaskActions id={task.$id} projectId={task.projectId}>
+                                                                    <Button variant="ghost" className="size-6 p-0">
+                                                                        <MoreVertical className="size-4" />
+                                                                    </Button>
+                                                                </TaskActions>
+                                                            </div>
+                                                            <div className="flex items-center gap-2 text-xs text-neutral-500">
+                                                                <div className="flex items-center gap-2">
+                                                                    <ProjectAvatar
+                                                                        className="size-4"
+                                                                        name={task.project?.name}
+                                                                        image={task.project?.ImageUrl}
+                                                                    />
+                                                                    <span className="truncate">{task.project?.name}</span>
+                                                                </div>
+                                                                {task.dueDate && (
+                                                                    <span className="ml-auto whitespace-nowrap">
+                                                                        {format(new Date(task.dueDate), 'MMM d, yyyy')}
+                                                                    </span>
                                                                 )}
                                                             </div>
-                                                            <TaskActions id={task.$id} projectId={task.projectId}>
-                                                                <Button variant="ghost" className="size-8 p-0 h-auto">
-                                                                    <MoreVertical className="size-4" />
-                                                                </Button>
-                                                            </TaskActions>
+                                                            {task.assignee && (
+                                                                <div className="flex items-center gap-2 text-xs text-neutral-500 mt-1">
+                                                                    <MemberAvatar
+                                                                        className="size-5"
+                                                                        fallbackClassName="text-xs"
+                                                                        name={task.assignee.name}
+                                                                        image={task.assignee.imageUrl}
+                                                                    />
+                                                                    <span className="truncate">{task.assignee.name}</span>
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 )}
