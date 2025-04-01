@@ -86,6 +86,21 @@ export const TaskIdClient = () => {
                             )}
                         </div>
                         <div>
+                            <h3 className="text-sm text-muted-foreground mb-1">Assigned To</h3>
+                            {data.assignedTo ? (
+                                <div className="flex items-center gap-2">
+                                    <MemberAvatar
+                                        className="size-6"
+                                        name={data.assignedTo.name}
+                                        image={data.assignedTo.imageUrl}
+                                    />
+                                    <span className="text-sm">{data.assignedTo.name}</span>
+                                </div>
+                            ) : (
+                                <span className="text-sm text-muted-foreground">Not assigned</span>
+                            )}
+                        </div>
+                        <div>
                             <h3 className="text-sm text-muted-foreground mb-1">Due Date</h3>
                             <span className="text-sm">
                                 {data.dueDate ? format(new Date(data.dueDate), "MMMM do, yyyy") : "No due date"}
