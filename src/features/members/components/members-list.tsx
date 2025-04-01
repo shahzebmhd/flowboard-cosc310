@@ -22,6 +22,17 @@ import { useUpdateMember } from "@/features/members/api/use-update-members";
 import { MemberRole } from "@/features/members/types";
 import React from "react";
 
+interface Member {
+  $id: string;
+  name: string;
+  email: string;
+  role: MemberRole;
+}
+
+interface MembersResponse {
+  documents: Member[];
+  total: number;
+}
 
 export const MembersList = () => {
   const workspaceId = useWorkspaceId();
@@ -31,7 +42,7 @@ export const MembersList = () => {
     "destructive"
   );
 
-  const { data } = useGetMembers({ workspaceId });
+  const { data } = useGetMembers({ workspaceId }) as { data: MembersResponse | undefined };
   const { mutate: deleteMember, isPending: isDeletingMember } = useDeleteMember();
   const { mutate: updateMember, isPending: isUpdatingMember } = useUpdateMember();
 
@@ -72,7 +83,7 @@ export const MembersList = () => {
         <DottedSeparator />
       </div>
       <CardContent className="p-7">
-        {data?.documents.map((member, index) => (
+        {data?.documents.map((member: Member, index: number) => (
           <Fragment key={member.$id}>
             <div className="flex items-center gap-2">
               <MemberAvatar
@@ -82,7 +93,11 @@ export const MembersList = () => {
               />
               <div className="flex flex-col">
                 <p className="text-sm font-medium">{member.name}</p>
-                <p className="text-xs text-muted-foreground">{member.name}</p>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span>{member.email}</span>
+                  <span>•</span>
+                  <span className="uppercase">{member.role}</span>
+                </div>
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
