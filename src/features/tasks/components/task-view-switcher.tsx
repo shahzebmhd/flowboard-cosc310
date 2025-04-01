@@ -18,7 +18,11 @@ import { DataKanban } from "./data-kanban";
 
 import React from "react";
 
-export const TaskViewSwitcher = () => {
+interface TaskViewSwitcherProps {
+    hideProjectFilter?: boolean;
+}
+
+export const TaskViewSwitcher = ({ hideProjectFilter }: TaskViewSwitcherProps) => {
     const [view, setView] = useQueryState("task-view", {
         defaultValue: "table",
     });
@@ -59,7 +63,7 @@ export const TaskViewSwitcher = () => {
                     </Button>
                 </div>
                 <DottedSeparator className="my-4" />
-                <DataFilters />
+                <DataFilters hideProjectFilter={hideProjectFilter}  />
                 <DottedSeparator className="my-4" />
 
                 {isLoadingTasks ? (
