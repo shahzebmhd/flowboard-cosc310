@@ -8,11 +8,7 @@ const ProjectIdSettingsPage = async () => {
     const user = await getCurrent();
     if (!user) redirect("/sign-in");
     
-    return (
-        <>
-            <ProjectIdSettingsClient/>
-        </>
-    )
+    return <ProjectIdSettingsClient/>
 }
 
 export default ProjectIdSettingsPage;

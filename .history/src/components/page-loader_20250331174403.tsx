@@ -26,7 +26,7 @@ const PageLoader = ({ isLoaded }: PageLoaderProps) => {
     if (!shouldRender) return null;
     
     return (
-            <div className={`fixed inset-0 z-[9999] top-0 left-0 h-screen w-full flex flex-col items-center justify-center bg-background transition-opacity duration-500 ease-in-out ${isLoaded ? 'opacity-0' : 'opacity-100'}`}>
+            <div className={`fixed inset-0 z-[9999] top-0 left-0 h-screen w-full flex flex-col items-center justify-center bg-background transition-opacity duration-500 ease-in-out ${shouldAnimateOut ? 'opacity-0' : 'opacity-100'}`}>
                 <Image src="/Flowboard Logo Light.svg" alt="Logo" className="block dark:hidden" width={56} height={56} priority />
                 <Image src="/Flowboard Logo Dark.svg" alt="Logo" className="hidden dark:block" width={56} height={56} priority />
                 <Loader className="size-6 animate-spin text-muted-foreground mt-4" />
