@@ -5,7 +5,6 @@ import {cn} from "@/lib/utils";
 import "./globals.css";
 import {QueryProvider} from "@/components/query-provider";
 import {Toaster} from "@/components/ui/sonner";
-import { ThemeWrapper } from "@/features/settings/components/theme-wrapper";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -16,24 +15,21 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-    children,
-}: Readonly<{
+                                       children,
+                                   }: Readonly<{
     children: React.ReactNode;
 }>) {
-
     return (
-            <ThemeWrapper>
         <html lang="en">
         <body
-            className={cn(inter.className, "antialiased min-h-screen")}
+            className={cn(inter.className, "antialised min-h-screen")}
         >
-                <QueryProvider>
-                    <Toaster/>
-                    {children}
-                </QueryProvider>
+        <QueryProvider>
+            <Toaster/>
+            {children}
+        </QueryProvider>
         </body>
         </html>
-            </ThemeWrapper>
     );
 
 }

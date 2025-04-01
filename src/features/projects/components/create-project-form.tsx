@@ -1,5 +1,4 @@
 "use client";
-
 import {useRef} from "react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm, FormProvider, Controller} from "react-hook-form"; // Import Controller
@@ -16,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { createProjectSchema } from "../schemas";
 import { useCreateProject } from "../api/use-create-project";
+//import { useCreateWorkspace } from "@/features/workspaces/api/use-create-workspace";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
 
@@ -52,7 +52,7 @@ export const CreateProjectForm = ({onCancel}: CreateProjectFormProps) => {
     };
 
     return (
-        <Card className="w-full h-full border-none shadow-none bg-secondary text-primary">
+        <Card className="w-full h-full border-none shadow-none">
             <CardHeader className="flex p-7">
                 <CardTitle className="text-xl font-bold">Create a new Project</CardTitle>
             </CardHeader>
@@ -71,7 +71,7 @@ export const CreateProjectForm = ({onCancel}: CreateProjectFormProps) => {
                                     <FormItem>
                                         <FormLabel>Project Name</FormLabel>
                                         <FormControl>
-                                            <Input {...field} placeholder="Enter Project name" className="border-1 rounded-md bg-tertiary"/>
+                                            <Input {...field} placeholder="Enter Project name"/>
                                         </FormControl>
                                         <FormMessage/>
                                     </FormItem>
@@ -102,7 +102,7 @@ export const CreateProjectForm = ({onCancel}: CreateProjectFormProps) => {
                                                     />
                                                 </div>
                                             ) : (
-                                                <Avatar className={"size-[72px] bg-tertiary"}>
+                                                <Avatar className={"size-[72px]"}>
                                                     <AvatarFallback>
                                                         <ImageIcon className={"size-[36px] text-neutral-400"}/>
                                                     </AvatarFallback>

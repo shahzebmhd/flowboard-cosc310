@@ -55,7 +55,7 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
     };
 
     return (
-        <Card className="w-full h-full border-none shadow-none bg-secondary text-primary">
+        <Card className="w-full h-full border-none shadow-none">
             <CardHeader className="flex p-7">
                 <CardTitle className="text-xl font-bold">Create a new task</CardTitle>
             </CardHeader>
@@ -76,7 +76,7 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                     <FormItem>
                                         <FormLabel>Task Name</FormLabel>
                                         <FormControl>
-                                            <Input {...field} placeholder="Enter task name" className="border-1 rounded-md bg-tertiary"/>
+                                            <Input {...field} placeholder="Enter task name" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -166,16 +166,16 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                         <FormLabel>Status</FormLabel>
                                         <Select defaultValue={field.value} onValueChange={field.onChange}>
                                             <FormControl>
-                                                <SelectTrigger className="border-1 rounded-md bg-tertiary">
+                                                <SelectTrigger>
                                                     <SelectValue placeholder="Select status" />
                                                 </SelectTrigger>
                                             </FormControl>
-                                            <SelectContent className="border-1 rounded-md bg-tertiary">
-                                                <SelectItem value={TaskStatus.BACKLOG} className="p-2 hover:text-emphasis">Backlog</SelectItem>
-                                                <SelectItem value={TaskStatus.IN_PROGRESS} className="p-2 hover:text-emphasis">In Progress</SelectItem>
-                                                <SelectItem value={TaskStatus.IN_REVIEW} className="p-2 hover:text-emphasis">In Review</SelectItem>
-                                                <SelectItem value={TaskStatus.TODO} className="p-2 hover:text-emphasis">To Do</SelectItem>
-                                                <SelectItem value={TaskStatus.DONE} className="p-2 hover:text-emphasis">Done</SelectItem>
+                                            <SelectContent>
+                                                <SelectItem value={TaskStatus.BACKLOG}>Backlog</SelectItem>
+                                                <SelectItem value={TaskStatus.IN_PROGRESS}>In Progress</SelectItem>
+                                                <SelectItem value={TaskStatus.IN_REVIEW}>In Review</SelectItem>
+                                                <SelectItem value={TaskStatus.TODO}>To Do</SelectItem>
+                                                <SelectItem value={TaskStatus.DONE}>Done</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -192,11 +192,11 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
                                         <FormLabel>Project</FormLabel>
                                         <Select defaultValue={field.value} onValueChange={field.onChange}>
                                             <FormControl>
-                                                <SelectTrigger className="border-1 rounded-md bg-tertiary">
+                                                <SelectTrigger>
                                                     <SelectValue placeholder="Select project" />
                                                 </SelectTrigger>
                                             </FormControl>
-                                            <SelectContent className="border-1 rounded-md bg-quaternary">
+                                            <SelectContent>
                                                 {projectOptions.map((project) => (
                                                     <SelectItem key={project.id} value={project.id}>
                                                         <div className="flex items-center gap-x-2">
