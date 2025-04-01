@@ -22,8 +22,12 @@ export async function POST(req: Request) {
 
     if (!result.success) {
       console.error('Email sending failed:', result.error);
+      const errorMessage = result.error instanceof Error 
+        ? result.error.message 
+        : 'Failed to send email';
+        
       return NextResponse.json(
-        { error: result.error?.message || 'Failed to send email' },
+        { error: errorMessage },
         { status: 500 }
       );
     }
