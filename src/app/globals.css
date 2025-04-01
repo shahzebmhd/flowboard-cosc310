@@ -10,54 +10,26 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-  .text-primary {
-    color: var(--text);
-  }
-  .text-destruct {
-    color: var(--destructive);
-  }
-  .text-inverse {
-    color: var(--text-flip)
-  }
-  .bg-primary {
-    background-color: var(--background);
-  }
-  .bg-secondary {
-    background-color: var(--foreground);
-  }
-  .bg-tertiary {
-    background-color: var(--background-tertiary);
-  }
-  .bg-quaternary {
-    background-color: var(--muted);
-  }
-  .fill-color {
-    fill: context-fill var(--secondary);
-  }
 }
 
 @layer base {
   :root {
-    --background: #FFFFFF;
-    --text: #000000;
-    --text-hover: #454d50;
-    --text-flip: #d9dde1;
-    --foreground: #f1f6fa;
-    --background-tertiary: #e6ecf4;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: #2563eb;
-    --primary-foreground: #6A95F1;
-    --secondary: #7FE3F0;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
-    --muted: #d8dff0;
+    --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 96.1%;
     --accent-foreground: 0 0% 9%;
-    --destructive: #FF0000;
-    --destructive-foreground: #ff5500;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
@@ -69,27 +41,22 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: #121616;
-    --text: #dbdbdb;
-    --text-logo: #6a7173;
-    --text-hover: #FFFFFF;
-    --text-flip: #000000;
-    --foreground: #22282a;
-    --background-tertiary: #363c3e;
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: #bc27ea;
-    --primary-foreground: #c83af4;
-    --secondary: #DB7F67;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: #454d50;
+    --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: #504488;
-    --accent-foreground: #998FC7;
-    --destructive: #FF6666;
-    --destructive-foreground: #DB7F67;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;

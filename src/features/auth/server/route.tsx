@@ -1,12 +1,11 @@
 import {Hono} from "hono";
 import {zValidator} from "@hono/zod-validator";
-import {loginSchema, registerSchema, settingsSchema} from "@/features/auth/schemas";
+import {loginSchema, registerSchema} from "@/features/auth/schemas";
 import { createAdminClient } from "@/lib/appwrite";
 import { ID } from "node-appwrite";
 import {deleteCookie, setCookie} from "hono/cookie"
 import { AUTH_COOKIE } from "@/features/auth/constants";
 import { sessionMiddleware } from "@/lib/session-middleware";
-import { DATABASE_ID, SETTINGS_ID } from "@/config";
 
 const app = new Hono();
 app.get(
@@ -18,6 +17,7 @@ app.get(
         return c.json({ data: user });
     }
 );
+
 
     app.post("/login", zValidator("json", loginSchema), async (c) => {
     const {email, password} = c.req.valid("json");
@@ -39,8 +39,8 @@ app.get(
 async (c) => {
     const {name, email, password} = c.req.valid("json");
     const {account}= await createAdminClient();
-    await account.create(
-        ID.unique(),
+     await account.create(
+         ID.unique(),
         email,
         password,
         name,

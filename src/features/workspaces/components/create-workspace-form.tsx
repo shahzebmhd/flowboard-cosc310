@@ -52,7 +52,7 @@ export const CreateWorkspaceForm = ({onCancel}: CreateWorkspaceFormProps) => {
     };
 
     return (
-        <Card className="w-full h-full border-none shadow-none bg-secondary text-primary">
+        <Card className="w-full h-full border-none shadow-none">
             <CardHeader className="flex p-7">
                 <CardTitle className="text-xl font-bold">Create a new workspace</CardTitle>
             </CardHeader>
@@ -71,7 +71,7 @@ export const CreateWorkspaceForm = ({onCancel}: CreateWorkspaceFormProps) => {
                                     <FormItem>
                                         <FormLabel>Workspace Name</FormLabel>
                                         <FormControl>
-                                            <Input {...field} placeholder="Enter workspace name" className="border-1 rounded-md bg-tertiary"/>
+                                            <Input {...field} placeholder="Enter workspace name"/>
                                         </FormControl>
                                         <FormMessage/>
                                     </FormItem>
@@ -95,14 +95,14 @@ export const CreateWorkspaceForm = ({onCancel}: CreateWorkspaceFormProps) => {
                                             {field.value ? (
                                                 <div className={"size-[72px] relative rounded-md overflow-hidden"}>
                                                     <Image alt="Workspace logo"
-                                                        fill
-                                                        className="object-cover"
-                                                        src={field.value instanceof File ?
-                                                        URL.createObjectURL(field.value) : field.value}
+                                                           fill
+                                                           className="object-cover"
+                                                           src={field.value instanceof File ?
+                                                               URL.createObjectURL(field.value) : field.value}
                                                     />
                                                 </div>
                                             ) : (
-                                                <Avatar className={"size-[72px] bg-tertiary"}>
+                                                <Avatar className={"size-[72px]"}>
                                                     <AvatarFallback>
                                                         <ImageIcon className={"size-[36px] text-neutral-400"}/>
                                                     </AvatarFallback>

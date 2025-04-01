@@ -131,7 +131,7 @@ app.get(
 
         const populatedTasks = tasks.documents.map((task) => {
             const project = projects.documents.find((proj) => proj.$id === task.projectId);
-            // const assignee = assignees.find((asg) => asg.$id === task.assigneeId);
+            const assignee = assignees.find((asg) => asg.$id === task.assigneeId);
 
             return {
                 ...task,
