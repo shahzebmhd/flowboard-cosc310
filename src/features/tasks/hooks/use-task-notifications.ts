@@ -14,6 +14,15 @@ export interface Notification {
 // Make sure we have access to localStorage
 const isClient = typeof window !== 'undefined';
 
+// Debounce function to prevent rapid localStorage updates
+const debounce = (func: Function, wait: number) => {
+  let timeout: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};
+
 export const useTaskNotifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -22,36 +31,58 @@ export const useTaskNotifications = () => {
   useEffect(() => {
     if (!isClient) return;
     
-    try {
-      const storedNotifications = localStorage.getItem("notifications");
-      console.log('Trying to load notifications from localStorage:', storedNotifications);
-      
-      if (storedNotifications) {
-        const parsedNotifications = JSON.parse(storedNotifications);
-        console.log('Successfully parsed notifications:', parsedNotifications);
-        setNotifications(parsedNotifications);
-      } else {
-        console.log('No stored notifications found');
+    const loadNotifications = () => {
+      try {
+        const storedNotifications = localStorage.getItem("notifications");
+        if (storedNotifications) {
+          const parsedNotifications = JSON.parse(storedNotifications);
+          setNotifications(parsedNotifications);
+        } else {
+          setNotifications([]);
+        }
+      } catch (error) {
+        localStorage.removeItem("notifications");
+        setNotifications([]);
+      } finally {
+        setLoaded(true);
       }
-    } catch (error) {
-      console.error("Error loading notifications:", error);
-      localStorage.removeItem("notifications");
-    } finally {
-      setLoaded(true);
-    }
+    };
+
+    loadNotifications();
+
+    // Listen for storage events from other tabs
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'notifications' && e.newValue !== null) {
+        try {
+          const newNotifications = JSON.parse(e.newValue);
+          setNotifications(newNotifications);
+        } catch (error) {
+          // Handle error silently
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
+
+  // Debounced save to localStorage
+  const debouncedSave = debounce((notifs: Notification[]) => {
+    if (!isClient) return;
+    try {
+      localStorage.setItem("notifications", JSON.stringify(notifs));
+    } catch (error) {
+      // Handle error silently
+    }
+  }, 1000);
 
   // Save notifications when they change
   useEffect(() => {
-    if (!isClient || !loaded) return;
-    
-    console.log('Saving notifications to localStorage:', notifications);
-    localStorage.setItem("notifications", JSON.stringify(notifications));
+    if (!loaded) return;
+    debouncedSave(notifications);
   }, [notifications, loaded]);
 
   const addNotification = (message: string, taskId?: string) => {
-    console.log('Adding new notification:', { message, taskId });
-    
     const newNotification: Notification = {
       id: uuidv4(),
       message,
@@ -60,30 +91,11 @@ export const useTaskNotifications = () => {
       taskId
     };
     
-    // Directly try to immediately save to localStorage
-    if (isClient) {
-      try {
-        const current = localStorage.getItem("notifications");
-        const currentNotifications = current ? JSON.parse(current) : [];
-        const updatedNotifications = [newNotification, ...currentNotifications];
-        localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
-      } catch (error) {
-        console.error("Error saving notification directly to localStorage:", error);
-      }
-    }
-    
-    // Update state
-    setNotifications(prev => {
-      const updated = [newNotification, ...prev];
-      console.log('Updated notifications state:', updated);
-      return updated;
-    });
-    
+    setNotifications(prev => [newNotification, ...prev]);
     return newNotification;
   };
 
   const markAsRead = (id: string) => {
-    console.log('Marking notification as read:', id);
     setNotifications(prev => 
       prev.map(notification => 
         notification.id === id 
@@ -94,21 +106,18 @@ export const useTaskNotifications = () => {
   };
 
   const markAllAsRead = () => {
-    console.log('Marking all notifications as read');
     setNotifications(prev => 
       prev.map(notification => ({ ...notification, read: true }))
     );
   };
 
   const removeNotification = (id: string) => {
-    console.log('Removing notification:', id);
     setNotifications(prev => 
       prev.filter(notification => notification.id !== id)
     );
   };
 
   const clearAllNotifications = () => {
-    console.log('Clearing all notifications');
     setNotifications([]);
     if (isClient) {
       localStorage.removeItem("notifications");
@@ -116,8 +125,7 @@ export const useTaskNotifications = () => {
   };
   
   const getUnreadCount = () => {
-    const count = notifications.filter(n => !n.read).length;
-    return count;
+    return notifications.filter(n => !n.read).length;
   };
 
   return {

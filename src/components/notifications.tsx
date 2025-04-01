@@ -37,7 +37,6 @@ export const Notifications = () => {
   useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === 'notifications') {
-        console.log('Notifications changed in localStorage, refreshing...');
         window.location.reload();
       }
     };
@@ -57,7 +56,6 @@ export const Notifications = () => {
   }, [notifications, unreadCount]);
 
   const testNotification = () => {
-    console.log('Testing notification');
     addNotification('This is a test notification', 'test-task-id');
   };
 

@@ -37,13 +37,36 @@ export const TaskOverview = ({
                 <DottedSeparator className="my-4" />
                 <div className="flex flex-col gap-y-4">
                     <OverviewProperty label="Assignee">
-                        <MemberAvatar 
-                            name={task.assignee.name}
-                            className="size-6"
-                        />
-                        <p className="text-sm font-medium">
-                            {task.assignee.name}
+                        {task.assignee ? (
+                            <>
+                                <MemberAvatar 
+                                    name={task.assignee.name}
+                                    className="size-6"
+                                />
+                                <p className="text-sm font-medium">
+                                    {task.assignee.name}
+                                </p>
+                            </>
+                        ) : (
+                            <p className="text-sm text-muted-foreground">Not assigned</p>
+                        )}
+                    </OverviewProperty>
                         </p>
+                    </OverviewProperty>
+                    <OverviewProperty label="Assigned To">
+                        {task.assignedTo ? (
+                            <>
+                                <MemberAvatar 
+                                    name={task.assignedTo.name}
+                                    className="size-6"
+                                />
+                                <p className="text-sm font-medium">
+                                    {task.assignedTo.name}
+                                </p>
+                            </>
+                        ) : (
+                            <p className="text-sm text-muted-foreground">Not assigned</p>
+                        )}
                     </OverviewProperty>
                     <OverviewProperty label="Due Date">
                         <TaskDate 
