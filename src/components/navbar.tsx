@@ -1,6 +1,7 @@
 import { UserButton } from "@/features/auth/components/user-button";
 import { MobileSidebar } from "./mobile-sidebar";
 import { EmailModal } from "./EmailTest";
+import { Notifications } from "./notifications";
 
 export const Navbar = () => {
     return(
@@ -11,6 +12,7 @@ export const Navbar = () => {
             </div>
             <MobileSidebar />
             <div className="flex items-center gap-x-4">
+                <Notifications />
                 <EmailModal />
                 <UserButton />
             </div>
