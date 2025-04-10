@@ -9,11 +9,6 @@ A modern project management application built with Next.js 14, Appwrite, and Tai
 - **Mark**
 - **Shahzeb Iqbal** [Team Lead]
 
-
-### DevOps and Testing
-- **Q**
-- **Germain**
-
 ## Table of Contents
 
 - [Overview](#overview)
